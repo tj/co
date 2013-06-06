@@ -30,11 +30,15 @@ function co(fn) {
       return;
     }
 
-    ret.value(function(err, res){
-      if (err && !done) return gen.throw(err);
-      if (err) return done(err);
-      next(gen.send(res));
-    });
+    try {
+      ret.value(function(err, res){
+        if (err && !done) return gen.throw(err);
+        if (err) return done(err);
+        next(gen.send(res));
+      });
+    } catch (err) {
+      gen.throw(err);
+    }
   }
 
   next(gen.next());

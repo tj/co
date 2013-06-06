@@ -1,8 +1,9 @@
 
 var co = require('..');
 
-function get(val, err) {
+function get(val, err, error) {
   return function(done){
+    if (error) throw error;
     setTimeout(function(){
       done(err, val);
     }, 50);
@@ -38,6 +39,19 @@ describe('co(fn)', function(){
         [a,b,c].should.eql([1,2,3]);
 
         done();
+      });
+    })
+  })
+
+  describe('when the function throws', function(){
+    it('should be caught', function(done){
+      co(function *(){
+        try {
+          var a = yield get(1, null, new Error('boom'));
+        } catch (err) {
+          err.message.should.equal('boom');
+          done();
+        }
       });
     })
   })
