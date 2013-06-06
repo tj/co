@@ -25,7 +25,7 @@ co(function *(){
 })
 ```
 
-## Why not promises
+## Why not promises?
 
   I'm not a fan of promises personally, but preferences aside this
   is an extremely minimal layer between the traditional node `(err, result)`
