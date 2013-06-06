@@ -1,7 +1,7 @@
 # Co
 
   Generator based flow-control goodness for nodejs (and soon the browser), using
-  thunks instead of promises, letting you write non-blocking code in a nice-ish
+  thunks _or_ promises, letting you write non-blocking code in a nice-ish
   way.
 
   Currently you must use the `--harmony` or `--harmony-generators` flags when
@@ -32,12 +32,12 @@ co(function *(){
 })
 ```
 
-## Why not promises?
+## Thunks vs promises
 
-  I'm not a fan of promises personally, but preferences aside this
-  is an extremely minimal layer between the traditional node `(err, result)`
-  style callback using thunks. All you need to do is return a function, this
-  function behaves as the "thunk" or "future" that is `yield`ed to Co.
+  While co supports promises, you may return "thunks" from your functions,
+  which otherwise behaves just like the traditional node-style callback
+  with a signature of: `(err, result)`.
+
 
   For example take `fs.readFile`, we all know the signature is:
 
