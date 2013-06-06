@@ -1,7 +1,8 @@
 # Co
 
   Generator based flow-control goodness for nodejs (and soon the browser), using
-  thunks instead of promises.
+  thunks instead of promises, letting you write non-blocking code in a nice-ish
+  way.
 
 ## Installation
 
