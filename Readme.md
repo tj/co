@@ -302,6 +302,12 @@ co(function *(){
 })
 ```
 
+### Performance
+
+  On my machine 30,000 sequential stat()s takes an avg of 570ms,
+  while the same number of sequential stat() with `co()` takes
+  610ms, aka the overhead introducded by generators is _extremely_ negligable.
+
 ## License
 
   MIT
