@@ -14,7 +14,7 @@ co(function *(){
   console.log('done');
 })
 
-// I couldn't get streams2 to work... so, here's a fake request
+// I couldn't get streams2 to work... so, here's a fake request :)
 
 function get(url) {
   console.log('GET %s', url);
@@ -37,17 +37,13 @@ function Response() {
   }, 200);
 }
 
-/**
- * Inherit from `Emitter.prototype`.
- */
-
 Response.prototype.__proto__ = Emitter.prototype;
 
 Response.prototype.read = function(){
   var self = this;
   return function(done){
-    // push kinda sucks... we need to
-    // handle whichever comes first
+    // push kinda sucks for this... we need to
+    // handle whichever comes first with this hack
     self.once('data', function(buf){
       self.removeListener('end', done);
       done(null, buf);
