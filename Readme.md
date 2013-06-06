@@ -16,6 +16,7 @@ $ npm install co
 ## Associated libraries
 
   - [co-fs](https://github.com/visionmedia/co-fs) - core `fs` function wrappers
+  - [co-exec](https://github.com/visionmedia/co-exec) - core `exec` function wrapper
 
 ## Example
 
