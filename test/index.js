@@ -44,6 +44,22 @@ describe('co(fn)', function(){
     })
   })
 
+  describe('with many arguments', function(){
+    it('should return an array', function(done){
+      function exec(cmd) {
+        return function(done){
+          done(null, 'stdout', 'stderr');
+        }
+      }
+
+      co(function *(){
+        var out = yield exec('something');
+        out.should.eql(['stdout', 'stderr']);
+        done();
+      });
+    })
+  })
+
   describe('when the function throws', function(){
     it('should be caught', function(done){
       co(function *(){

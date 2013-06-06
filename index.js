@@ -20,6 +20,11 @@ function co(fn) {
   function next(err, res) {
     var ret;
 
+    // multiple args
+    if (arguments.length > 2) {
+      res = [].slice.call(arguments, 1);
+    }
+
     // error
     if (err) {
       try {
