@@ -60,13 +60,13 @@ function co(fn) {
     try {
       ret.value(next);
     } catch (e) {
-      process.nextTick(function(){
+      setImmediate(function(){
         next(e);
       });
     }
   }
 
-  process.nextTick(next);
+  setImmediate(next);
 
   return function(fn){
     done = fn;
