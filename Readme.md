@@ -283,6 +283,25 @@ co(function *(){
   a value that is _not_ a function to `yield`, for example
   `yield "something"`, which has no meaning to `co`.
 
+### Does it work with streams?
+
+  Not out of the box, but if you're willing to fight node a bit you can
+  wrestle streams into something usable:
+
+```js
+co(function *(){
+  var res = yield get('http://google.com');
+  console.log('-> %s', res.status);
+
+  var buf;
+  while (buf = yield res.read()) {
+    console.log(buf.toString());
+  }
+
+  console.log('done');
+})
+```
+
 ## License
 
   MIT
