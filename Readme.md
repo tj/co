@@ -1,4 +1,3 @@
-
 # Co
 
   Generator based flow-control goodness for nodejs (and soon the browser), using
@@ -10,7 +9,7 @@
 $ npm install co
 ```
 
-## Assiciated libraries
+## Associated libraries
 
   - [co-fs](https://github.com/visionmedia/co-fs) - core `fs` function wrappers
 
