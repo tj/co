@@ -19,7 +19,7 @@ var foo = co(function *(){
 })
 
 var bar = co(function *(){
-  var a = yield size('examples/parallel.js');
+  var a = yield size('examples/return.js');
   var b = yield size('examples/nested.js');
   var c = yield size('examples/simple.js');
   return [a, b, c];
