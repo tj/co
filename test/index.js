@@ -170,13 +170,23 @@ describe('co(fn)', function(){
   describe('with errors', function(){
     describe('and no callback', function(){
       it('should throw', function(done){
+        var errors = [];
+
         co(function *(){
           try {
-            var a = yield get(1, new Error('fail'));
+            var a = yield get(1, new Error('foo'));
           } catch (err) {
-            err.message.should.equal('fail');
-            done();
+            errors.push(err.message);
           }
+
+          try {
+            var a = yield get(1, new Error('bar'));
+          } catch (err) {
+            errors.push(err.message);
+          }
+
+          errors.should.eql(['foo', 'bar']);
+          done();
         });
       })
     })
