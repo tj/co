@@ -177,7 +177,7 @@ co(function *(){
 
 ```js
 
-var co = require('cb');
+var co = require('co');
 var fs = require('fs');
 
 var read = co.wrap(fs.readFile);
@@ -200,7 +200,7 @@ sizes(function(err, res){
 
 ```js
 
-var co = require('cb');
+var co = require('co');
 var fs = require('fs');
 
 var read = co.wrap(fs.readFile);
@@ -219,7 +219,7 @@ Optionally you may pass the `fn`'s receiver as the `ctx` as shown here:
 
 ```js
 
-var co = require('cb')
+var co = require('co')
 var redis = require('redis')
 var db = redis.createClient()
 
@@ -246,7 +246,7 @@ co(function *(){
 
 ```js
 
-var co = require('cb');
+var co = require('co');
 var join = co.join;
 var fs = require('fs');
 
