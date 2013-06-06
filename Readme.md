@@ -10,6 +10,10 @@
 $ npm install co
 ```
 
+## Assiciated libraries
+
+  - [co-fs](https://github.com/visionmedia/co-fs) - core `fs` function wrappers
+
 ## Example
 
 ```js
