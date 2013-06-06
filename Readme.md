@@ -273,6 +273,12 @@ co(function *(){
   - it's not a scheduler
   - it doesn't use promises
 
+### What's this "yielded a non-function" error?
+
+  If you get this error it means that you're passing
+  a value that is _not_ a function to `yield`, for example
+  `yield "something"`, which has no meaning to `co`.
+
 ## License
 
   MIT

@@ -46,6 +46,11 @@ function co(fn) {
       return;
     }
 
+    // non-function
+    if ('function' != typeof ret.value) {
+      return next(new Error('yielded a non-function'));
+    }
+
     // thunk
     try {
       ret.value(next);
@@ -56,7 +61,7 @@ function co(fn) {
     }
   }
 
-  next();
+  process.nextTick(next);
 
   return function(fn){
     done = fn;

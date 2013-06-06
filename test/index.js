@@ -167,43 +167,103 @@ describe('co(fn)', function(){
     })
   })
 
+  describe('when yielding a non-function', function(){
+    it('should throw', function(done){
+      var errors = [];
+
+      co(function *(){
+        try {
+          var a = yield 'something';
+        } catch (err) {
+          errors.push(err.message);
+        }
+
+        try {
+          var a = yield 'something';
+        } catch (err) {
+          errors.push(err.message);
+        }
+
+        errors.should.eql(['yielded a non-function', 'yielded a non-function']);
+        done();
+      });
+    })
+  })
+
   describe('with errors', function(){
-    describe('and no callback', function(){
-      it('should throw', function(done){
-        var errors = [];
+    it('should throw', function(done){
+      var errors = [];
 
-        co(function *(){
-          try {
-            var a = yield get(1, new Error('foo'));
-          } catch (err) {
-            errors.push(err.message);
-          }
+      co(function *(){
+        try {
+          var a = yield get(1, new Error('foo'));
+        } catch (err) {
+          errors.push(err.message);
+        }
 
-          try {
-            var a = yield get(1, new Error('bar'));
-          } catch (err) {
-            errors.push(err.message);
-          }
+        try {
+          var a = yield get(1, new Error('bar'));
+        } catch (err) {
+          errors.push(err.message);
+        }
 
-          errors.should.eql(['foo', 'bar']);
-          done();
-        });
+        errors.should.eql(['foo', 'bar']);
+        done();
+      });
+    })
+
+    it('should catch errors on .send()', function(done){
+      var errors = [];
+
+      co(function *(){
+        try {
+          var a = yield get(1, null, new Error('foo'));
+        } catch (err) {
+          errors.push(err.message);
+        }
+
+        try {
+          var a = yield get(1, null, new Error('bar'));
+        } catch (err) {
+          errors.push(err.message);
+        }
+
+        errors.should.eql(['foo', 'bar']);
+        done();
       })
     })
 
-    describe('and a callback', function(){
-      it('should pass the error', function(done){
-        var cb = co(function *(){
-          yield get(1);
-          yield get(1, new Error('fail'));
-          throw new Error('should not reach here');
-        });
+    it('should pass future errors to the callback', function(done){
+      co(function *(){
+        yield get(1);
+        yield get(2, null, new Error('fail'));
+        assert(false);
+        yield get(3);
+      })(function(err){
+        err.message.should.equal('fail');
+        done();
+      });
+    })
 
-        cb(function(err){
-          err.message.should.equal('fail');
-          done();
-        });
-      })
+    it('should pass immediate errors to the callback', function(done){
+      co(function *(){
+        yield get(1);
+        yield get(2, new Error('fail'));
+        assert(false);
+        yield get(3);
+      })(function(err){
+        err.message.should.equal('fail');
+        done();
+      });
+    })
+
+    it('should catch errors on the first invocation', function(done){
+      co(function *(){
+        throw new Error('fail');
+      })(function(err){
+        err.message.should.equal('fail');
+        done();
+      });
     })
   })
 })
