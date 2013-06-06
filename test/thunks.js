@@ -183,7 +183,7 @@ describe('co(fn)', function(){
     })
   })
 
-  describe('when yielding a non-function', function(){
+  describe('when yielding neither a function nor a promise', function(){
     it('should throw', function(done){
       var errors = [];
 
@@ -200,7 +200,8 @@ describe('co(fn)', function(){
           errors.push(err.message);
         }
 
-        errors.should.eql(['yielded a non-function', 'yielded a non-function']);
+        var msg = 'yield a function or promise';
+        errors.should.eql([msg, msg]);
         done();
       });
     })

@@ -51,19 +51,29 @@ function co(fn) {
       return;
     }
 
-    // non-function
-    if ('function' != typeof ret.value) {
-      return next(new Error('yielded a non-function'));
+    // thunk
+    if ('function' == typeof ret.value) {
+      try {
+        ret.value(next);
+      } catch (e) {
+        setImmediate(function(){
+          next(e);
+        });
+      }
+      return;
     }
 
-    // thunk
-    try {
-      ret.value(next);
-    } catch (e) {
-      setImmediate(function(){
-        next(e);
-      });
+    // promise
+    if (ret.value && 'function' == typeof ret.value.then) {
+      ret.value.then(function(value) {
+        next(null, value);
+      }, next);
+
+      return;
     }
+
+    // neither
+    next(new Error('yield a function or promise'));
   }
 
   setImmediate(next);

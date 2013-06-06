@@ -5,7 +5,8 @@
   "keywords": ["async", "flow", "generator", "coro", "coroutine"],
   "devDependencies": {
     "should": "~1.2.2",
-    "mocha": "~1.10.0"
+    "mocha": "~1.10.0",
+    "q": "~0.9.4"
   },
   "license": "MIT"
 }
