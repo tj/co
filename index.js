@@ -17,31 +17,46 @@ function co(fn) {
   var gen = fn();
   var done;
 
-  function next(ret) {
+  function next(err, res) {
+    var ret;
+
+    // error
+    if (err) {
+      try {
+        ret = gen.throw(err);
+      } catch (e) {
+        if (!done) throw e;
+        return done(e);
+      }
+    }
+
+    // ok
+    if (!err) {
+      try {
+        ret = gen.send(res);
+      } catch (e) {
+        if (!done) throw e;
+        return done(e);
+      }
+    }
+
+    // done
     if (ret.done) {
       if (done) done(null, ret.value);
       return;
     }
 
-    if ('function' != typeof ret.value) {
-      var err = new Error('yielded a non-function');
-      if (done) done(err);
-      else gen.throw(err);
-      return;
-    }
-
+    // thunk
     try {
-      ret.value(function(err, res){
-        if (err && !done) return gen.throw(err);
-        if (err) return done(err);
-        next(gen.send(res));
+      ret.value(next);
+    } catch (e) {
+      process.nextTick(function(){
+        next(e);
       });
-    } catch (err) {
-      gen.throw(err);
     }
   }
 
-  next(gen.next());
+  next();
 
   return function(fn){
     done = fn;

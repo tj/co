@@ -1,5 +1,6 @@
 
 var co = require('..');
+var assert = require('assert');
 
 function get(val, err, error) {
   return function(done){
@@ -52,6 +53,25 @@ describe('co(fn)', function(){
           err.message.should.equal('boom');
           done();
         }
+      });
+    })
+  })
+
+  describe('when an error is passed', function(){
+    it('should throw and resume', function(done){
+      var error;
+
+      co(function *(){
+        try {
+          yield get(1, new Error('boom'));
+        } catch (err) {
+          error = err;
+        }
+
+        assert('boom' == error.message);
+        var ret = yield get(1);
+        assert(1 == ret);
+        done();
       });
     })
   })
