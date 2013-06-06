@@ -170,7 +170,7 @@ co(function *(){
 
 ```js
 
-var co = require('..');
+var co = require('cb');
 var fs = require('fs');
 
 var read = co.wrap(fs.readFile);
@@ -187,13 +187,13 @@ sizes(function(err, res){
 });
 ```
 
-### co.wrap(fn)
+### co.wrap(fn, [ctx])
 
   The `co.wrap()` utility simply wraps a node-style function to return a thunk.
 
 ```js
 
-var co = require('..');
+var co = require('cb');
 var fs = require('fs');
 
 var read = co.wrap(fs.readFile);
@@ -208,6 +208,29 @@ co(function *(){
 });
 ```
 
+Optionally you may pass the `fn`'s receiver as the `ctx` as shown here:
+
+```js
+
+var co = require('cb')
+var redis = require('redis')
+var db = redis.createClient()
+
+db.set = co.wrap(db.set, db)
+db.get = co.wrap(db.get, db)
+
+co(function *(){
+  yield db.set('foo', 'bar')
+  yield db.set('bar', 'baz')
+
+  var res = yield db.get('foo')
+  console.log('foo -> %s', res);
+
+  var res = yield db.get('bar')
+  console.log('bar -> %s', res);
+})
+```
+
 ### co.join(fn...)
 
   The `co.join()` utility function allows you to pass multiple thunks, or an array
@@ -216,7 +239,7 @@ co(function *(){
 
 ```js
 
-var co = require('..');
+var co = require('cb');
 var join = co.join;
 var fs = require('fs');
 

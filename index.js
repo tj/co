@@ -52,12 +52,12 @@ function co(fn) {
  * @api public
  */
 
-exports.wrap = function(fn){
+exports.wrap = function(fn, ctx){
   return function(){
     var args = [].slice.call(arguments);
     return function(done){
       args.push(done);
-      fn.apply(this, args);
+      fn.apply(ctx || this, args);
     }
   }
 };
