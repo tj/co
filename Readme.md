@@ -4,6 +4,9 @@
   thunks instead of promises, letting you write non-blocking code in a nice-ish
   way.
 
+  Currently you must use the `--harmony` or `--harmony-generators` flags when
+  running node 0.11.x to get access to generators.
+
 ## Installation
 
 ```
