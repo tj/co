@@ -274,6 +274,19 @@ co(function *(){
 });
 ```
 
+  As an alias of `join(array)` you may simply `yield` an array:
+
+```js
+co(function *(){
+  var a = size('.gitignore');
+  var b = size('index.js');
+  var c = size('Makefile');
+  var res = yield [a, b, c];
+  console.log(res);
+  // => [ 13, 1687, 129 ]
+});
+```
+
 ## FAQ
 
 ### How does this compare to taskjs?
