@@ -7,6 +7,10 @@
   Currently you must use the `--harmony` or `--harmony-generators` flags when
   running node 0.11.x to get access to generators.
 
+  Co is careful to relay any errors that occur back to the generator, including those
+  within the thunk, or from the thunk's callback. "Uncaught" exceptions in the generator are
+  then either passed `co()`'s thunk or thrown.
+
 ## Installation
 
 ```
