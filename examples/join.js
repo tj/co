@@ -42,3 +42,14 @@ co(function *(){
   var res = yield join(a, b, c);
   console.log(res);
 });
+
+// 3 with array syntax
+
+co(function *(){
+  var a = size('.gitignore');
+  var b = size('index.js');
+  var c = size('Makefile');
+  var res = yield [a, b, c];
+  console.log(res);
+});
+

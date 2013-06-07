@@ -51,6 +51,11 @@ function co(fn) {
       return;
     }
 
+    // array (join)
+    if (Array.isArray(ret.value)) {
+      ret.value = exports.join(ret.value);
+    }
+
     // thunk
     if ('function' == typeof ret.value) {
       try {
