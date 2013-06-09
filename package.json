@@ -1,6 +1,6 @@
 {
   "name": "co",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "generator async flow control goodness",
   "keywords": ["async", "flow", "generator", "coro", "coroutine"],
   "devDependencies": {
