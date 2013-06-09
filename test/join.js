@@ -21,6 +21,18 @@ describe('co.join(array)', function(){
       done();
     });
   })
+
+  it('should noop with no args', function(done){
+    co(function *(){
+      var res = yield join();
+      res.should.have.length(0);
+
+      var res = yield [];
+      res.should.have.length(0);
+
+      done();
+    });
+  })
 })
 
 describe('co.join(fn, ...)', function(){

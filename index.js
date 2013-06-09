@@ -122,7 +122,12 @@ exports.join = function(fns) {
     var results = new Array(pending);
     var finished;
 
-    if (!pending) return done();
+    if (!pending) {
+      setImmediate(function(){
+        done(null, results);
+      });
+      return;
+    }
 
     for (var i = 0; i < fns.length; i++) {
       run(fns[i], i);
