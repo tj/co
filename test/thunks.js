@@ -12,6 +12,21 @@ function get(val, err, error) {
 }
 
 describe('co(fn)', function(){
+  it('should have the same receiver', function(done){
+    var foo = { thread: co };
+    foo.thread(function *(){
+      this.should.equal(foo);
+      done();
+    });
+  })
+
+  it('should pass arguments', function(done){
+    co(function *(a, b, c){
+      [a, b, c].should.eql([1,2,3]);
+      done();
+    }, 1, 2, 3);
+  })
+
   describe('with no yields', function(){
     it('should work', function(done){
       co(function *(){

@@ -14,7 +14,8 @@ exports = module.exports = co;
  */
 
 function co(fn) {
-  var gen = fn();
+  var args = [].slice.call(arguments, 1);
+  var gen = fn.apply(this, args);
   var done;
 
   function next(err, res) {
