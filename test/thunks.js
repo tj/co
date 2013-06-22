@@ -215,7 +215,7 @@ describe('co(fn)', function(){
           errors.push(err.message);
         }
 
-        var msg = 'yield a function or promise';
+        var msg = 'yield a function, promise, generator, or array';
         errors.should.eql([msg, msg]);
         done();
       });

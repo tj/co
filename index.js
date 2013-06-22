@@ -1,5 +1,11 @@
 
 /**
+ * toString reference.
+ */
+
+var toString = Object.prototype.toString;
+
+/**
  * Expose `co`.
  */
 
@@ -15,7 +21,7 @@ exports = module.exports = co;
 
 function co(fn) {
   var args = [].slice.call(arguments, 1);
-  var gen = fn.apply(this, args);
+  var gen = isGenerator(fn) ? fn : fn.apply(this, args);
   var done;
 
   function next(err, res) {
@@ -57,6 +63,11 @@ function co(fn) {
       ret.value = exports.join(ret.value);
     }
 
+    // generator
+    if (isGenerator(ret.value)) {
+      ret.value = co(ret.value);
+    }
+
     // thunk
     if ('function' == typeof ret.value) {
       try {
@@ -79,7 +90,7 @@ function co(fn) {
     }
 
     // neither
-    next(new Error('yield a function or promise'));
+    next(new Error('yield a function, promise, generator, or array'));
   }
 
   setImmediate(next);
@@ -155,3 +166,15 @@ exports.join = function(fns) {
     }
   }
 };
+
+/**
+ * Check if `fn` is a generator.
+ *
+ * @param {Mixed} obj
+ * @return {Boolean}
+ * @api private
+ */
+
+function isGenerator(obj) {
+  return '[object Generator]' == toString.call(obj);
+}
