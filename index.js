@@ -58,20 +58,8 @@ function co(fn) {
       return;
     }
 
-    // array (join)
-    if (Array.isArray(ret.value)) {
-      ret.value = exports.join(ret.value);
-    }
-
-    // generator function
-    if (isGeneratorFunction(ret.value)) {
-      ret.value = ret.value();
-    }
-
-    // generator
-    if (isGenerator(ret.value)) {
-      ret.value = co(ret.value);
-    }
+    // normalize
+    ret.value = toThunk(ret.value);
 
     // thunk
     if ('function' == typeof ret.value) {
@@ -152,20 +140,9 @@ exports.join = function(fns) {
 
     function run(fn, i) {
       if (finished) return;
-
-      if (Array.isArray(fn)) {
-        fn = exports.join(fn);
-      }
-
-      if (isGeneratorFunction(fn)) {
-        fn = fn();
-      }
-
-      if (isGenerator(fn)) {
-        fn = co(fn);
-      }
-
       try {
+        fn = toThunk(fn);
+
         fn(function(err, res){
           if (finished) return;
 
@@ -184,6 +161,21 @@ exports.join = function(fns) {
     }
   }
 };
+
+/**
+ * Convert `obj` into a normalized thunk.
+ *
+ * @param {Mixed} obj
+ * @return {Function}
+ * @api private
+ */
+
+function toThunk(obj) {
+  if (Array.isArray(obj)) obj = exports.join(obj);
+  if (isGeneratorFunction(obj)) obj = obj();
+  if (isGenerator(obj)) obj = co(obj);
+  return obj;
+}
 
 /**
  * Check if `fn` is a generator.
