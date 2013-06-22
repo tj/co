@@ -61,7 +61,7 @@ function co(fn) {
     // normalize
     ret.value = toThunk(ret.value);
 
-    // thunk
+    // run
     if ('function' == typeof ret.value) {
       try {
         ret.value(next);
@@ -73,16 +73,7 @@ function co(fn) {
       return;
     }
 
-    // promise
-    if (ret.value && 'function' == typeof ret.value.then) {
-      ret.value.then(function(value) {
-        next(null, value);
-      }, next);
-
-      return;
-    }
-
-    // neither
+    // invalid
     next(new Error('yield a function, promise, generator, or array'));
   }
 
@@ -174,7 +165,36 @@ function toThunk(obj) {
   if (Array.isArray(obj)) obj = exports.join(obj);
   if (isGeneratorFunction(obj)) obj = obj();
   if (isGenerator(obj)) obj = co(obj);
+  if (isPromise(obj)) obj = promiseToThunk(obj);
   return obj;
+}
+
+/**
+ * Convert `promise` to a thunk.
+ *
+ * @param {Object} promise
+ * @return {Function}
+ * @api private
+ */
+
+function promiseToThunk(promise) {
+  return function(fn){
+    promise.then(function(res) {
+      fn(null, res);
+    }, fn);
+  }
+}
+
+/**
+ * Check if `obj` is a promise.
+ *
+ * @param {Object} obj
+ * @return {Boolean}
+ * @api private
+ */
+
+function isPromise(obj) {
+  return obj && 'function' == typeof obj.then;
 }
 
 /**
@@ -186,7 +206,7 @@ function toThunk(obj) {
  */
 
 function isGenerator(obj) {
-  return '[object Generator]' == toString.call(obj);
+  return obj && '[object Generator]' == toString.call(obj);
 }
 
 /**
@@ -198,5 +218,5 @@ function isGenerator(obj) {
  */
 
 function isGeneratorFunction(obj) {
-  return obj.constructor && obj.constructor.name == 'GeneratorFunction';
+  return obj && obj.constructor && 'GeneratorFunction' == obj.constructor.name;
 }
