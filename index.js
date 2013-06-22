@@ -63,6 +63,11 @@ function co(fn) {
       ret.value = exports.join(ret.value);
     }
 
+    // generator function
+    if (isGeneratorFunction(ret.value)) {
+      ret.value = ret.value();
+    }
+
     // generator
     if (isGenerator(ret.value)) {
       ret.value = co(ret.value);
@@ -147,6 +152,19 @@ exports.join = function(fns) {
 
     function run(fn, i) {
       if (finished) return;
+
+      if (Array.isArray(fn)) {
+        fn = exports.join(fn);
+      }
+
+      if (isGeneratorFunction(fn)) {
+        fn = fn();
+      }
+
+      if (isGenerator(fn)) {
+        fn = co(fn);
+      }
+
       try {
         fn(function(err, res){
           if (finished) return;
@@ -177,4 +195,16 @@ exports.join = function(fns) {
 
 function isGenerator(obj) {
   return '[object Generator]' == toString.call(obj);
+}
+
+/**
+ * Check if `fn` is a generator function.
+ *
+ * @param {Mixed} obj
+ * @return {Boolean}
+ * @api private
+ */
+
+function isGeneratorFunction(obj) {
+  return obj.constructor && obj.constructor.name == 'GeneratorFunction';
 }

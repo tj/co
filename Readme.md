@@ -45,6 +45,7 @@ co(function *(){
   - thunks (functions)
   - array (parallel execution)
   - generators (delegation)
+  - generator functions (delegation)
 
 ## Thunks vs promises
 
@@ -111,9 +112,6 @@ co(function *(){
 
   You may also yield `Generator` objects to support nesting:
 
-#### Nesting co() calls
-
-  The `co()` function itself returns a thunk, this means you can nest appropriately:
 
 ```js
 var co = require('co');
@@ -147,6 +145,32 @@ co(function *(){
   var b = yield bar();
   console.log(a);
   console.log(b);
+});
+```
+
+  Or if the generator functions do not require arguments, simply `yield` the function:
+
+```js
+var request = require('superagent');
+
+var get = co.wrap(request.get);
+
+function *results() {
+  var a = yield get('http://google.com')
+  var b = yield get('http://yahoo.com')
+  var c = yield get('http://ign.com')
+  return [a.status, b.status, c.status]
+}
+
+co(function *(){
+  // 3 concurrent requests at a time
+  var a = yield results;
+  var b = yield results;
+  var c = yield results;
+  console.log(a, b, c);
+
+  // 9 concurrent requests
+  console.log(yield [results, results, results]);
 });
 ```
 
@@ -261,6 +285,24 @@ co(function *(){
   console.log(res);
   // => [ 13, 1687, 129 ]
 });
+```
+
+  Nested joins may also be expressed as simple nested arrays:
+
+```js
+var a = [
+  get('http://google.com'),
+  get('http://yahoo.com'),
+  get('http://ign.com')
+];
+
+var b = [
+  get('http://google.com'),
+  get('http://yahoo.com'),
+  get('http://ign.com')
+];
+
+console.log(yield [a, b]);
 ```
 
 ## FAQ

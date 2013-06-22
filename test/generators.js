@@ -28,8 +28,19 @@ describe('co(fn)', function(){
   describe('with a generator', function(){
     it('should wrap with co()', function(done){
       co(function *(){
-        var calls = yield work(calls);
+        var calls = yield work();
         calls.should.eql(['one', 'two', 'three', 'four', 'five']);
+
+        var a = work();
+        var b = work();
+        var c = work();
+
+        var calls = yield [a, b, c];
+        calls.should.eql([
+          [ 'one', 'two', 'three', 'four', 'five' ],
+          [ 'one', 'two', 'three', 'four', 'five' ],
+          [ 'one', 'two', 'three', 'four', 'five' ] ]);
+
         done();
       });
     })
