@@ -11,6 +11,8 @@
   within the thunk, or from the thunk's callback. "Uncaught" exceptions in the generator are
   then either passed `co()`'s thunk or thrown.
 
+  Make sure to view the [examples](https://github.com/visionmedia/co/tree/master/examples).
+
 ## Installation
 
 ```
