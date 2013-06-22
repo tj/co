@@ -1,4 +1,12 @@
 
+1.4.0 / 2013-06-21 
+==================
+
+ * add promise support to joins
+ * add `yield generatorFunction` support
+ * add `yield generator` support
+ * add nested join support
+
 1.3.0 / 2013-06-10 
 ==================
 
