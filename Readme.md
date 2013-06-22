@@ -37,6 +37,15 @@ co(function *(){
 })
 ```
 
+## Yieldables
+
+  The "yieldable" objects currently supported are:
+
+  - promises
+  - thunks (functions)
+  - array (parallel execution)
+  - generators (delegation)
+
 ## Thunks vs promises
 
   While co supports promises, you may return "thunks" from your functions,
