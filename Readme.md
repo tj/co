@@ -315,34 +315,6 @@ var b = [
 console.log(yield [a, b]);
 ```
 
-## FAQ
-
-### How does this compare to taskjs?
-
-  - it's smaller
-  - it's not a scheduler
-  - you can use thunks (functions)
-  - you can use promises
-
-### Does it work with streams?
-
-  Not out of the box, but if you're willing to fight node a bit you can
-  wrestle streams into something usable:
-
-```js
-co(function *(){
-  var res = yield get('http://google.com');
-  console.log('-> %s', res.status);
-
-  var buf;
-  while (buf = yield res.read()) {
-    console.log(buf.toString());
-  }
-
-  console.log('done');
-})
-```
-
 ### Performance
 
   On my machine 30,000 sequential stat()s takes an avg of 570ms,
