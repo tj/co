@@ -45,7 +45,7 @@ function co(fn) {
     // ok
     if (!err) {
       try {
-        ret = gen.send(res);
+        ret = gen.next(res);
       } catch (e) {
         if (!done) throw e;
         return done(e);

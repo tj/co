@@ -4,7 +4,7 @@
   thunks _or_ promises, letting you write non-blocking code in a nice-ish
   way.
 
-  Currently you must use the `--harmony` or `--harmony-generators` flags when
+  Currently you must use the `--harmony-generators` flag when
   running node 0.11.x to get access to generators.
 
   Co is careful to relay any errors that occur back to the generator, including those

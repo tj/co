@@ -4,7 +4,7 @@ test:
 		--require should \
 		--reporter spec \
 		--slow 2s \
-		--harmony \
+		--harmony-generators \
 		--bail
 
 .PHONY: test
