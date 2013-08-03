@@ -24,6 +24,7 @@ $ npm install co
   - [co-fs](https://github.com/visionmedia/co-fs) - core `fs` function wrappers
   - [co-exec](https://github.com/visionmedia/co-exec) - core `exec` function wrapper
   - [co-prompt](https://github.com/visionmedia/co-prompt) - terminal user input utilities
+  - [level-co](https://github.com/juliangruber/level-co) - levelup wrapper
 
 ## Example
 
