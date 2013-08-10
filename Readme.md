@@ -94,6 +94,24 @@ function read(path, encoding) {
 
   This is what the `co.wrap(fn)` utility function does for you.
 
+## Receiver propagation
+
+  When `co` is invoked with a receiver it will propagate to most yieldables,
+  allowing you to alter `this`.
+
+```js
+var ctx = {};
+
+function foo() {
+  assert(this == ctx);
+}
+
+co.call(ctx, function *(){
+  assert(this == ctx);
+  yield foo;
+});
+```
+
 ## API
 
 ### co(fn)
