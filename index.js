@@ -12,18 +12,18 @@ var toString = Object.prototype.toString;
 exports = module.exports = co;
 
 /**
- * Wrap the given generator `fn`.
+ * Wrap the given generator `fn` with
+ * optional `done` callback.
  *
  * @param {Function} fn
+ * @param {Function} [done]
  * @return {Function}
  * @api public
  */
 
-function co(fn, ctx) {
-  var args = [].slice.call(arguments, 1);
-  var gen = isGenerator(fn) ? fn : fn.apply(this, args);
+function co(fn, done, ctx) {
+  var gen = isGenerator(fn) ? fn : fn.call(this);
   ctx = ctx || this;
-  var done;
 
   function next(err, res) {
     var ret;
@@ -78,7 +78,8 @@ function co(fn, ctx) {
     next(new Error('yield a function, promise, generator, or array'));
   }
 
-  setImmediate(next);
+  if (done) next();
+  else setImmediate(next);
 
   return function(fn){
     done = fn;
@@ -165,11 +166,12 @@ exports.join = function(fns) {
  */
 
 function toThunk(obj, ctx) {
-  if (Array.isArray(obj)) obj = exports.join.call(ctx, obj);
+  var fn = obj;
+  if (Array.isArray(obj)) fn = exports.join.call(ctx, obj);
   if (isGeneratorFunction(obj)) obj = obj.call(ctx);
-  if (isGenerator(obj)) obj = co(obj, ctx);
-  if (isPromise(obj)) obj = promiseToThunk(obj);
-  return obj;
+  if (isGenerator(obj)) fn = function(done){ co(obj, done, ctx) };
+  if (isPromise(obj)) fn = promiseToThunk(obj);
+  return fn;
 }
 
 /**

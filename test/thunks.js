@@ -19,14 +19,7 @@ describe('co(fn)', function(){
       done();
     });
   })
-
-  it('should pass arguments', function(done){
-    co(function *(a, b, c){
-      [a, b, c].should.eql([1,2,3]);
-      done();
-    }, 1, 2, 3);
-  })
-
+  
   describe('with no yields', function(){
     it('should work', function(done){
       co(function *(){

@@ -23,13 +23,21 @@ exports.compare = {
       yield fun;
       yield fun;
       yield fun;
+    }, done);
+  },
+
+  'function delegation thunk': function(done){
+    co(function *(){
+      yield fun;
+      yield fun;
+      yield fun;
     })(done);
   },
 
   'function delegation join': function(done){
     co(function *(){
       yield [fun, fun, fun];
-    })(done);
+    }, done);
   },
 
   'promise delegation': function(done){
@@ -37,7 +45,7 @@ exports.compare = {
       yield getPromise(1);
       yield getPromise(2);
       yield getPromise(3);
-    })(done);
+    }, done);
   },
 
   'generator function delegation': function(done){
@@ -45,7 +53,7 @@ exports.compare = {
       yield gen;
       yield gen;
       yield gen;
-    })(done);
+    }, done);
   }
 };
 
