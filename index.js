@@ -19,9 +19,10 @@ exports = module.exports = co;
  * @api public
  */
 
-function co(fn) {
+function co(fn, ctx) {
   var args = [].slice.call(arguments, 1);
   var gen = isGenerator(fn) ? fn : fn.apply(this, args);
+  ctx = ctx || this;
   var done;
 
   function next(err, res) {
@@ -59,12 +60,12 @@ function co(fn) {
     }
 
     // normalize
-    ret.value = toThunk(ret.value);
+    ret.value = toThunk(ret.value, ctx);
 
     // run
     if ('function' == typeof ret.value) {
       try {
-        ret.value(next);
+        ret.value.call(ctx, next);
       } catch (e) {
         setImmediate(function(){
           next(e);
@@ -112,6 +113,7 @@ exports.wrap = function(fn, ctx){
 
 exports.join = function(fns) {
   if (!Array.isArray(fns)) fns = [].slice.call(arguments);
+  var ctx = this;
 
   return function(done){
     var pending = fns.length;
@@ -132,9 +134,9 @@ exports.join = function(fns) {
     function run(fn, i) {
       if (finished) return;
       try {
-        fn = toThunk(fn);
+        fn = toThunk(fn, ctx);
 
-        fn(function(err, res){
+        fn.call(ctx, function(err, res){
           if (finished) return;
 
           if (err) {
@@ -157,14 +159,15 @@ exports.join = function(fns) {
  * Convert `obj` into a normalized thunk.
  *
  * @param {Mixed} obj
+ * @param {Mixed} ctx
  * @return {Function}
  * @api private
  */
 
-function toThunk(obj) {
-  if (Array.isArray(obj)) obj = exports.join(obj);
-  if (isGeneratorFunction(obj)) obj = obj();
-  if (isGenerator(obj)) obj = co(obj);
+function toThunk(obj, ctx) {
+  if (Array.isArray(obj)) obj = exports.join.call(ctx, obj);
+  if (isGeneratorFunction(obj)) obj = obj.call(ctx);
+  if (isGenerator(obj)) obj = co(obj, ctx);
   if (isPromise(obj)) obj = promiseToThunk(obj);
   return obj;
 }
