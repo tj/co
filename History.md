@@ -1,4 +1,10 @@
 
+0.5.0 / 2013-08-10 
+==================
+
+ * add receiver propagation support
+ * examples: update streams.js example to use `http.get()` and streams2 API
+
 1.4.1 / 2013-07-01 
 ==================
 
