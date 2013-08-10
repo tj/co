@@ -2,11 +2,18 @@
   "name": "co",
   "version": "1.4.1",
   "description": "generator async flow control goodness",
-  "keywords": ["async", "flow", "generator", "coro", "coroutine"],
+  "keywords": [
+    "async",
+    "flow",
+    "generator",
+    "coro",
+    "coroutine"
+  ],
   "devDependencies": {
     "should": "~1.2.2",
     "mocha": "~1.10.0",
-    "q": "~0.9.4"
+    "q": "~0.9.4",
+    "bench": "~0.3.5"
   },
   "license": "MIT"
 }

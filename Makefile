@@ -7,4 +7,7 @@ test:
 		--harmony-generators \
 		--bail
 
-.PHONY: test
+bench:
+	@node --harmony-generators benchmark
+
+.PHONY: test bench
