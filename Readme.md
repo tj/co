@@ -26,6 +26,7 @@ $ npm install co
   - [co-prompt](https://github.com/visionmedia/co-prompt) - terminal user input utilities
   - [co-express](https://github.com/mciparelli/co-express) - [express](https://github.com/visionmedia/express) wrapper that enables generators to be used as middlewares
   - [level-co](https://github.com/juliangruber/level-co) - levelup wrapper
+  - [mysql-co](https://github.com/sidorares/mysql-co) - mysql wrapper
 
 ## Example
 
