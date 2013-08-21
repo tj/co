@@ -15,5 +15,9 @@
     "q": "~0.9.4",
     "bench": "~0.3.5"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/visionmedia/co.git"
+  }
 }
