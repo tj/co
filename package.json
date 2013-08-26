@@ -11,7 +11,7 @@
   ],
   "devDependencies": {
     "should": "~1.2.2",
-    "mocha": "~1.10.0",
+    "mocha": "~1.12.0",
     "q": "~0.9.4",
     "bench": "~0.3.5"
   },
