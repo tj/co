@@ -28,6 +28,7 @@ $ npm install co
   - [level-co](https://github.com/juliangruber/level-co) - levelup wrapper
   - [mysql-co](https://github.com/sidorares/mysql-co) - mysql wrapper
   - [co-each](https://github.com/juliangruber/co-each) - parallel foreach
+  - [co-wait](https://github.com/juliangruber/co-wait) - setTimeout wrapper
 
 ## Example
 
