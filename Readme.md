@@ -254,7 +254,7 @@ co(function *(){
 });
 ```
 
-Optionally you may pass the `fn`'s receiver as the `ctx` as shown here:
+An example with redis:
 
 ```js
 
@@ -262,8 +262,8 @@ var co = require('co')
 var redis = require('redis')
 var db = redis.createClient()
 
-db.set = co.wrap(db.set, db)
-db.get = co.wrap(db.get, db)
+db.set = co.wrap(db.set)
+db.get = co.wrap(db.get)
 
 co(function *(){
   yield db.set('foo', 'bar')

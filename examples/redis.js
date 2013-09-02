@@ -3,8 +3,8 @@ var co = require('..');
 var redis = require('redis');
 var db = redis.createClient();
 
-db.set = co.wrap(db.set, db);
-db.get = co.wrap(db.get, db);
+db.set = co.wrap(db.set);
+db.get = co.wrap(db.get);
 
 co(function *(){
   yield db.set('foo', 'bar');
