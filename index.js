@@ -1,4 +1,3 @@
-
 /**
  * toString reference.
  */
@@ -97,9 +96,10 @@ function co(fn, done, ctx) {
 exports.wrap = function(fn, ctx){
   return function(){
     var args = [].slice.call(arguments);
+    ctx = ctx || this;
     return function(done){
       args.push(done);
-      fn.apply(ctx || this, args);
+      fn.apply(ctx, args);
     }
   }
 };
