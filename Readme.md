@@ -29,6 +29,7 @@ $ npm install co
   - [mysql-co](https://github.com/sidorares/mysql-co) - mysql wrapper
   - [co-each](https://github.com/juliangruber/co-each) - parallel foreach
   - [co-wait](https://github.com/juliangruber/co-wait) - setTimeout wrapper
+  - [co-read](https://github.com/juliangruber/co-read) - consume readable streams
 
 ## Example
 
