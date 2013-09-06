@@ -30,6 +30,7 @@ $ npm install co
   - [co-each](https://github.com/juliangruber/co-each) - parallel foreach
   - [co-wait](https://github.com/juliangruber/co-wait) - setTimeout wrapper
   - [co-read](https://github.com/juliangruber/co-read) - consume readable streams
+  - [co-render](https://github.com/visionmedia/co-render) - template rendering built on consolidate.js
 
 ## Example
 
