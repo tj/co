@@ -32,6 +32,7 @@ $ npm install co
   - [co-read](https://github.com/juliangruber/co-read) - consume readable streams
   - [co-render](https://github.com/visionmedia/co-render) - template rendering built on consolidate.js
   - [co-views](https://github.com/visionmedia/co-views) - higher level template rendering based on co-render
+  - [co-request](https://github.com/stonedmind/co-request) - request library wrapper
 
 ## Example
 
