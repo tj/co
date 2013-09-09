@@ -21,18 +21,8 @@ $ npm install co
 
 ## Associated libraries
 
-  - [co-fs](https://github.com/visionmedia/co-fs) - core `fs` function wrappers
-  - [co-exec](https://github.com/visionmedia/co-exec) - core `exec` function wrapper
-  - [co-prompt](https://github.com/visionmedia/co-prompt) - terminal user input utilities
-  - [co-express](https://github.com/mciparelli/co-express) - [express](https://github.com/visionmedia/express) wrapper that enables generators to be used as middlewares
-  - [level-co](https://github.com/juliangruber/level-co) - levelup wrapper
-  - [mysql-co](https://github.com/sidorares/mysql-co) - mysql wrapper
-  - [co-each](https://github.com/juliangruber/co-each) - parallel foreach
-  - [co-wait](https://github.com/juliangruber/co-wait) - setTimeout wrapper
-  - [co-read](https://github.com/juliangruber/co-read) - consume readable streams
-  - [co-render](https://github.com/visionmedia/co-render) - template rendering built on consolidate.js
-  - [co-views](https://github.com/visionmedia/co-views) - higher level template rendering based on co-render
-  - [co-request](https://github.com/stonedmind/co-request) - request library wrapper
+  View the [wiki](https://github.com/visionmedia/co/wiki) for libraries that 
+  work well with Co.
 
 ## Example
 
