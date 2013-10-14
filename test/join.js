@@ -1,9 +1,10 @@
 
+var thunk = require('thunkify');
 var co = require('..');
 var fs = require('fs');
 var join = co.join;
 
-var read = co.wrap(fs.readFile);
+var read = thunk(fs.readFile);
 
 describe('co.join(array)', function(){
   it('should aggregate several thunks', function(done){

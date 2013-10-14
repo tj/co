@@ -1,10 +1,11 @@
 
-var co = require('..');
+var thunk = require('thunkify');
 var redis = require('redis');
 var db = redis.createClient();
+var co = require('..');
 
-db.set = co.wrap(db.set);
-db.get = co.wrap(db.get);
+db.set = thunk(db.set);
+db.get = thunk(db.get);
 
 co(function *(){
   yield db.set('foo', 'bar');

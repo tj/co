@@ -91,8 +91,6 @@ function read(path, encoding) {
 }
 ```
 
-  This is what the `co.wrap(fn)` utility function does for you.
-
 ## Receiver propagation
 
   When `co` is invoked with a receiver it will propagate to most yieldables,
@@ -179,9 +177,10 @@ co(function *(){
   Or if the generator functions do not require arguments, simply `yield` the function:
 
 ```js
+var thunkify = require('thunkify');
 var request = require('superagent');
 
-var get = co.wrap(request.get);
+var get = thunkify(request.get);
 
 function *results() {
   var a = yield get('http://google.com')
@@ -209,11 +208,11 @@ co(function *(){
   is passed to this (`sizes`) function.
 
 ```js
-
+var thunkify = require('thunkify');
 var co = require('co');
 var fs = require('fs');
 
-var read = co.wrap(fs.readFile);
+var read = thunkify(fs.readFile);
 
 var sizes = co(function *(){
   var a = yield read('.gitignore');
@@ -225,50 +224,6 @@ var sizes = co(function *(){
 sizes(function(err, res){
   console.log(res);
 });
-```
-
-### co.wrap(fn, [ctx])
-
-  The `co.wrap()` utility simply wraps a node-style function to return a thunk.
-
-```js
-
-var co = require('co');
-var fs = require('fs');
-
-var read = co.wrap(fs.readFile);
-
-co(function *(){
-  var a = yield read('.gitignore');
-  var b = yield read('Makefile', 'ascii');
-  var c = yield read('package.json', 'utf8');
-  console.log(a);
-  console.log(b);
-  console.log(c);
-});
-```
-
-An example with redis:
-
-```js
-
-var co = require('co')
-var redis = require('redis')
-var db = redis.createClient()
-
-db.set = co.wrap(db.set)
-db.get = co.wrap(db.get)
-
-co(function *(){
-  yield db.set('foo', 'bar')
-  yield db.set('bar', 'baz')
-
-  var res = yield db.get('foo')
-  console.log('foo -> %s', res);
-
-  var res = yield db.get('bar')
-  console.log('bar -> %s', res);
-})
 ```
 
 ### co.join(fn...)

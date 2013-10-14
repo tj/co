@@ -86,25 +86,6 @@ function co(fn, done, ctx) {
 }
 
 /**
- * Wrap regular callback style `fn` as a thunk.
- *
- * @param {Function} fn
- * @return {Function}
- * @api public
- */
-
-exports.wrap = function(fn, ctx){
-  return function(){
-    var args = [].slice.call(arguments);
-    ctx = ctx || this;
-    return function(done){
-      args.push(done);
-      fn.apply(ctx, args);
-    }
-  }
-};
-
-/**
  * Join the given `fns`.
  *
  * @param {Array|Function} ...

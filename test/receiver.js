@@ -1,7 +1,8 @@
 
+var thunk = require('thunkify');
 var co = require('..');
 var fs = require('fs');
-var read = co.wrap(fs.readFile);
+var read = thunk(fs.readFile);
 var assert = require('assert');
 
 var ctx = {

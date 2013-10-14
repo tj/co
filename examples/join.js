@@ -1,7 +1,7 @@
 
 var co = require('..');
-var join = co.join;
 var fs = require('fs');
+var join = co.join;
 
 function size(file) {
   return function(fn){
