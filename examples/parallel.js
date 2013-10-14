@@ -10,6 +10,8 @@ var fs = require('fs');
 // var res = yield [a, b, c] to execute them in
 // parallel.
 
+// for an alternative see ./join.js
+
 function read(file) {
   var done;
 
