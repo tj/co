@@ -30,4 +30,4 @@ co(function *(){
   var b = yield bar;
   console.log(a);
   console.log(b);
-})
+})()

@@ -31,7 +31,7 @@ co(function *(){
 
   var c = yield latency('http://cloudup.com', 5);
   console.log(c);
-})
+})()
 
 // run each test in parallel, order is retained
 
@@ -42,5 +42,5 @@ co(function *(){
 
   var res = yield [a, b, c];
   console.log(res);
-})
+})()
 

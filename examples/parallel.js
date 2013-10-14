@@ -46,4 +46,4 @@ co(function *(){
   console.log(yield a);
   console.log(yield b);
   console.log(yield c);
-})
+})()

@@ -16,4 +16,4 @@ co(function *(){
 
   var res = yield db.get('bar');
   console.log('bar -> %s', res);
-})
+})()

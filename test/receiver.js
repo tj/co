@@ -13,8 +13,7 @@ describe('co.call(receiver)', function(){
   it('should set immediate gen receiver', function(done){
     co.call(ctx, function *(){
       assert(ctx == this);
-      done();
-    });
+    })(done);
   })
 
   it('should set delegate generator receiver', function(done){
@@ -30,8 +29,7 @@ describe('co.call(receiver)', function(){
     co.call(ctx, function *(){
       assert(ctx == this);
       yield foo;
-      done();
-    });
+    })(done);
   })
 
   it('should set function receiver', function(done){
@@ -43,8 +41,7 @@ describe('co.call(receiver)', function(){
     co.call(ctx, function *(){
       assert(ctx == this);
       yield foo;
-      done();
-    });
+    })(done);
   })
 
   it('should set join delegate generator receiver', function(done){
@@ -63,8 +60,7 @@ describe('co.call(receiver)', function(){
     co.call(ctx, function *(){
       assert(ctx == this);
       yield [foo, bar, baz];
-      done();
-    });
+    })(done);
   })
 
   it('should set join function receiver', function(done){
@@ -86,7 +82,6 @@ describe('co.call(receiver)', function(){
     co.call(ctx, function *(){
       assert(ctx == this);
       yield [foo, bar, baz];
-      done();
-    });
+    })(done);
   })
 })

@@ -20,7 +20,7 @@ co(function *(){
     var res = yield get(url);
     console.log('%s -> %s', url, res[0].statusCode);
   }
-})
+})()
 
 // parallel
 
@@ -32,4 +32,4 @@ co(function *(){
   var codes = (yield reqs).map(function(r){ return r.statusCode });
 
   console.log(codes);
-})
+})()

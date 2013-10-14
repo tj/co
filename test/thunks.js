@@ -16,15 +16,14 @@ describe('co(fn)', function(){
     var foo = { thread: co };
     foo.thread(function *(){
       this.should.equal(foo);
-      done();
-    });
+    })(done);
   })
   
   describe('with no yields', function(){
     it('should work', function(done){
       co(function *(){
-        done();
-      });
+
+      })(done);
     })
   })
 
@@ -33,8 +32,7 @@ describe('co(fn)', function(){
       co(function *(){
         var a = yield get(1);
         a.should.equal(1);
-        done();
-      });
+      })(done);
     })
   })
 
@@ -46,9 +44,7 @@ describe('co(fn)', function(){
         var c = yield get(3);
 
         [a,b,c].should.eql([1,2,3]);
-
-        done();
-      });
+      })(done);
     })
   })
 
@@ -63,8 +59,7 @@ describe('co(fn)', function(){
       co(function *(){
         var out = yield exec('something');
         out.should.eql(['stdout', 'stderr']);
-        done();
-      });
+      })(done);
     })
   })
 
@@ -75,9 +70,8 @@ describe('co(fn)', function(){
           var a = yield get(1, null, new Error('boom'));
         } catch (err) {
           err.message.should.equal('boom');
-          done();
         }
-      });
+      })(done);
     })
   })
 
@@ -95,8 +89,7 @@ describe('co(fn)', function(){
         assert('boom' == error.message);
         var ret = yield get(1);
         assert(1 == ret);
-        done();
-      });
+      })(done);
     })
   })
 
@@ -140,8 +133,7 @@ describe('co(fn)', function(){
         });
 
         hit.should.eql(['one', 'two', 'three', 'four']);
-        done();
-      });
+      })(done);
     })
   })
 
@@ -210,8 +202,7 @@ describe('co(fn)', function(){
 
         var msg = 'yield a function, promise, generator, or array';
         errors.should.eql([msg, msg]);
-        done();
-      });
+      })(done);
     })
   })
 
@@ -233,8 +224,7 @@ describe('co(fn)', function(){
         }
 
         errors.should.eql(['foo', 'bar']);
-        done();
-      });
+      })(done);
     })
 
     it('should catch errors on .send()', function(done){
@@ -254,8 +244,7 @@ describe('co(fn)', function(){
         }
 
         errors.should.eql(['foo', 'bar']);
-        done();
-      })
+      })(done);
     })
 
     it('should pass future errors to the callback', function(done){

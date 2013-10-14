@@ -27,9 +27,7 @@ describe('co(fn)', function(){
 
         var res = yield [work, work, work];
         res.should.eql(['yay', 'yay', 'yay']);
-
-        done();
-      });
+      })(done);
     })
   })
 })

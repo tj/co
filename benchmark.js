@@ -26,18 +26,10 @@ suite('co()', function(){
       yield getPromise(1);
       yield getPromise(2);
       yield getPromise(3);
-    }, done);
+    })(done);
   })
 
-  bench('function delegation', function(done){
-    co(function *(){
-      yield fun;
-      yield fun;
-      yield fun;
-    }, done);
-  })
-
-  bench('function delegation thunk', function(done){
+  bench('thunks', function(done){
     co(function *(){
       yield fun;
       yield fun;
@@ -45,25 +37,17 @@ suite('co()', function(){
     })(done);
   })
 
-  bench('function delegation join', function(done){
+  bench('thunk join', function(done){
     co(function *(){
       yield [fun, fun, fun];
-    }, done);
+    })(done);
   })
 
-  bench('promise delegation', function(done){
-    co(function *(){
-      yield getPromise(1);
-      yield getPromise(2);
-      yield getPromise(3);
-    }, done);
-  })
-
-  bench('generator function delegation', function(done){
+  bench('generator functions', function(done){
     co(function *(){
       yield gen;
       yield gen;
       yield gen;
-    }, done);
+    })(done);
   })
 })

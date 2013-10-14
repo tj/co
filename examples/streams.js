@@ -15,7 +15,7 @@ co(function *(){
   }
 
   console.log('done');
-});
+})()
 
 function get(url) {
   console.log('GET %s', url);

@@ -21,7 +21,7 @@ co(function *(){
   console.log(a);
   console.log(b);
   console.log(c);
-});
+})()
 
 // 9 concurrent stat()s
 
@@ -31,7 +31,7 @@ co(function *(){
   var c = join(size('.gitignore'), size('index.js'), size('Makefile'));
   var d = yield join(a, b, c);
   console.log(d);
-});
+})()
 
 // 3
 
@@ -41,7 +41,7 @@ co(function *(){
   var c = size('Makefile');
   var res = yield join(a, b, c);
   console.log(res);
-});
+})()
 
 // 3 with array syntax
 
@@ -51,5 +51,5 @@ co(function *(){
   var c = size('Makefile');
   var res = yield [a, b, c];
   console.log(res);
-});
+})()
 

@@ -16,8 +16,7 @@ describe('co(fn)', function(){
       co(function *(){
         var a = yield getPromise(1);
         a.should.equal(1);
-        done();
-      });
+      })(done);
     })
   })
 
@@ -29,9 +28,7 @@ describe('co(fn)', function(){
         var c = yield getPromise(3);
 
         [a,b,c].should.eql([1,2,3]);
-
-        done();
-      });
+      })(done);
     })
   })
 
@@ -49,8 +46,7 @@ describe('co(fn)', function(){
         assert('boom' == error.message);
         var ret = yield getPromise(1);
         assert(1 == ret);
-        done();
-      });
+      })(done);
     })
   })
 })

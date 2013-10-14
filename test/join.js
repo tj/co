@@ -18,9 +18,7 @@ describe('co.join(array)', function(){
       res[0].should.include('exports');
       res[1].should.include('test');
       res[2].should.include('devDependencies');
-
-      done();
-    });
+    })(done);
   })
 
   it('should noop with no args', function(done){
@@ -30,9 +28,7 @@ describe('co.join(array)', function(){
 
       var res = yield [];
       res.should.have.length(0);
-
-      done();
-    });
+    })(done);
   })
 })
 
@@ -48,9 +44,7 @@ describe('co.join(fn, ...)', function(){
       res[0].should.include('exports');
       res[1].should.include('test');
       res[2].should.include('devDependencies');
-
-      done();
-    });
+    })(done);
   })
 })
 
@@ -66,8 +60,6 @@ describe('yield array', function(){
       res[0].should.include('exports');
       res[1].should.include('test');
       res[2].should.include('devDependencies');
-
-      done();
-    });
+    })(done);
   })
 })

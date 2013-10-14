@@ -40,9 +40,8 @@ describe('co(fn)', function(){
           [ 'one', 'two', 'three', 'four', 'five' ],
           [ 'one', 'two', 'three', 'four', 'five' ],
           [ 'one', 'two', 'three', 'four', 'five' ] ]);
-
-        done();
-      });
+      
+      })(done);
     })
   })
 })
