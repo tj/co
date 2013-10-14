@@ -57,6 +57,9 @@ co(function *(){
   - generators (delegation)
   - generator functions (delegation)
 
+ To convert a regular node function that accepts a callback
+ into one which returns a thunk you may want to use [thunkify](https://github.com/visionmedia/node-thunkify) or similar.
+
 ## Thunks vs promises
 
   While co supports promises, you may return "thunks" from your functions,
