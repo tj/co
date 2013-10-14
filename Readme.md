@@ -36,7 +36,7 @@ co(function *(){
   console.log(a.status);
   console.log(b.status);
   console.log(c.status);
-})
+})()
 
 co(function *(){
   var a = get('http://google.com');
@@ -44,7 +44,7 @@ co(function *(){
   var c = get('http://cloudup.com');
   var res = yield [a, b, c];
   console.log(res);
-})
+})()
 ```
 
 ## Yieldables
@@ -116,8 +116,9 @@ co.call(ctx, function *(){
 
 ### co(fn)
 
-  Pass a generator `fn` which is immediately invoked. Any `yield` expressions
-  within _must_ return a "thunk", at which point `co()` will defer execution.
+  Pass a generator `fn` and return a thunk. The thunk's signature is
+  `(err, result)`, where `result` is the value passed to the `return`
+  statement.
 
 ```js
 var co = require('co');
@@ -133,10 +134,8 @@ co(function *(){
   var a = yield read('.gitignore');
   var b = yield read('Makefile');
   var c = yield read('package.json');
-  console.log(a);
-  console.log(b);
-  console.log(c);
-});
+  return [a, b, c];
+})()
 ```
 
   You may also yield `Generator` objects to support nesting:
@@ -201,32 +200,33 @@ co(function *(){
 
   // 9 concurrent requests
   console.log(yield [results, results, results]);
-});
+})()
 ```
 
-#### co() return values
-
-  Since `co()` returns a thunk, you may pass a function to this thunk
-  to receive the `return` values from the generator. Any error that occurs
-  is passed to this (`sizes`) function.
+  If a thunk is written to execute immediately you may acheive parallelism 
+  by simply `yield`-ing _after_ the call. The following are equivalent since
+  each call kicks off execution immediately:
 
 ```js
-var thunkify = require('thunkify');
-var co = require('co');
-var fs = require('fs');
+co(function *(){
+  var a = size('package.json');
+  var b = size('Readme.md');
+  var c = size('Makefile');
 
-var read = thunkify(fs.readFile);
+  return [yield a, yield b, yield c];
+})()
+```
 
-var sizes = co(function *(){
-  var a = yield read('.gitignore');
-  var b = yield read('Makefile');
-  var c = yield read('package.json');
-  return [a.length, b.length, c.length];
-});
+  Or using join:
 
-sizes(function(err, res){
-  console.log(res);
-});
+```js
+co(function *(){
+  var a = size('package.json');
+  var b = size('Readme.md');
+  var c = size('Makefile');
+
+  return yield [a, b, c];
+})()
 ```
 
 ### co.join(fn...)
