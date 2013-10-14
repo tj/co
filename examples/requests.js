@@ -2,9 +2,8 @@
 var request = require('request');
 var thunk = require('thunkify');
 var co = require('..');
-var join = co.join;
 
-var get = thunk(request.get);
+var get = thunk(request);
 
 var urls = [
   'http://google.com',
@@ -19,20 +18,18 @@ co(function *(){
   for (var i = 0; i < urls.length; i++) {
     var url = urls[i];
     var res = yield get(url);
-    console.log('%s -> %s', url, res.status);
+    console.log('%s -> %s', url, res[0].statusCode);
   }
 })
 
 // parallel
 
 co(function *(){
-  var requests = urls.map(function(url){
+  var reqs = urls.map(function(url){
     return get(url);
   });
 
-  var responses = yield join(requests);
+  var codes = (yield reqs).map(function(r){ return r.statusCode });
 
-  console.log(responses.map(function(r){
-    return r.status;
-  }));
+  console.log(codes);
 })
