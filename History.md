@@ -1,4 +1,10 @@
 
+2.0.0 / 2013-10-14 
+==================
+
+ * remove callback in favour of thunk-only co(). Closes #30 [breaking change]
+ * remove `co.wrap()` [breaking change]
+
 1.5.2 / 2013-09-02 
 ==================
 
