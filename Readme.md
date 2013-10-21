@@ -21,7 +21,7 @@ $ npm install co
 
 ## Associated libraries
 
-  View the [wiki](https://github.com/visionmedia/co/wiki) for libraries that 
+  View the [wiki](https://github.com/visionmedia/co/wiki) for libraries that
   work well with Co.
 
 ## Example
@@ -173,7 +173,7 @@ co(function *(){
   var b = yield bar();
   console.log(a);
   console.log(b);
-});
+})()
 ```
 
   Or if the generator functions do not require arguments, simply `yield` the function:
@@ -203,7 +203,7 @@ co(function *(){
 })()
 ```
 
-  If a thunk is written to execute immediately you may acheive parallelism 
+  If a thunk is written to execute immediately you may acheive parallelism
   by simply `yield`-ing _after_ the call. The following are equivalent since
   each call kicks off execution immediately:
 
@@ -227,6 +227,17 @@ co(function *(){
 
   return yield [a, b, c];
 })()
+```
+
+  You can also pass arguments into the generator. The last argument, `done`, is
+  the callback function. Here's an example:
+
+```js
+var exec = require('co-exec');
+co(function *(cmd) {
+  var res = yield exec(cmd);
+  return res;
+})('pwd', done);
 ```
 
 ### co.join(fn...)

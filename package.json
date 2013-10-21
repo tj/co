@@ -15,7 +15,7 @@
     "q": "~0.9.4",
     "thunkify": "0.0.1",
     "request": "~2.27.0",
-    "matcha": "visionmedia/matcha"
+    "matcha": "~0.4.0"
   },
   "license": "MIT",
   "repository": {

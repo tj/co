@@ -3,6 +3,7 @@
  */
 
 var toString = Object.prototype.toString;
+var slice = Array.prototype.slice;
 
 /**
  * Expose `co`.
@@ -20,8 +21,8 @@ exports = module.exports = co;
  */
 
 function co(fn) {
-  var gen = isGenerator(fn) ? fn : fn.call(this);
   var ctx = this;
+  var gen;
   var done;
 
   function next(err, res) {
@@ -29,7 +30,7 @@ function co(fn) {
 
     // multiple args
     if (arguments.length > 2) {
-      res = [].slice.call(arguments, 1);
+      res = slice.call(arguments, 1);
     }
 
     // error
@@ -77,8 +78,10 @@ function co(fn) {
     next(new Error('yield a function, promise, generator, or array'));
   }
 
-  return function(fn){
-    done = fn;
+  return function(){
+    var args = slice.call(arguments);
+    done = args.pop();
+    gen = isGenerator(fn) ? fn : fn.apply(ctx, args);
     next();
   }
 }
@@ -92,7 +95,7 @@ function co(fn) {
  */
 
 exports.join = function(fns) {
-  if (!Array.isArray(fns)) fns = [].slice.call(arguments);
+  if (!Array.isArray(fns)) fns = slice.call(arguments);
   var ctx = this;
 
   return function(done){
