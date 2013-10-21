@@ -44,6 +44,19 @@ describe('co.call(receiver)', function(){
     })(done);
   })
 
+  it('should pass args', function(done){
+    function foo(done) {
+      assert(this == ctx);
+      done();
+    }
+
+    co.call(ctx, function *(a){
+      assert('yay' == a);
+      assert(ctx == this);
+      yield foo;
+    })('yay', done);
+  })
+
   it('should set join delegate generator receiver', function(done){
     function *baz() {
       assert(ctx == this);
