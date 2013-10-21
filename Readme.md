@@ -109,7 +109,17 @@ function foo() {
 co.call(ctx, function *(){
   assert(this == ctx);
   yield foo;
-});
+})()
+```
+
+  You also pass arguments through the generator:
+
+```js
+co.call(ctx, function *(a){
+  assert(this == ctx);
+  assert('yay' == a);
+  yield foo;
+})('yay');
 ```
 
 ## API
