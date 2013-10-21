@@ -22,8 +22,8 @@ exports = module.exports = co;
 
 function co(fn) {
   var ctx = this;
-  var gen;
   var done;
+  var gen;
 
   function next(err, res) {
     var ret;
