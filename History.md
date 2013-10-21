@@ -1,4 +1,9 @@
 
+2.1.0 / 2013-10-21 
+==================
+
+ * add passing of arguments into the generator. closes #33.
+
 2.0.0 / 2013-10-14 
 ==================
 
