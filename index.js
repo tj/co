@@ -185,7 +185,7 @@ function isPromise(obj) {
 }
 
 /**
- * Check if `fn` is a generator.
+ * Check if `obj` is a generator.
  *
  * @param {Mixed} obj
  * @return {Boolean}
@@ -197,7 +197,7 @@ function isGenerator(obj) {
 }
 
 /**
- * Check if `fn` is a generator function.
+ * Check if `obj` is a generator function.
  *
  * @param {Mixed} obj
  * @return {Boolean}
