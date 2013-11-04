@@ -193,9 +193,7 @@ function isPromise(obj) {
  */
 
 function isGenerator(obj) {
-  return (obj && '[object Generator]' == toString.call(obj)) ||
-    // this fallback is here for polyfill runtimes, like facebook/regenerator
-    (obj && obj.constructor && 'Generator' == obj.constructor.name);
+  return obj && 'function' == typeof obj.next && 'function' == typeof obj.throw;
 }
 
 /**
