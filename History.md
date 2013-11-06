@@ -1,4 +1,9 @@
 
+2.2.0 / 2013-11-05 
+==================
+
+ * change: make the `isGenerator()` function more generic
+
 2.1.0 / 2013-10-21 
 ==================
 
