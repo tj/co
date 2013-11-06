@@ -185,7 +185,7 @@ function isPromise(obj) {
 }
 
 /**
- * Check if `fn` is a generator.
+ * Check if `obj` is a generator.
  *
  * @param {Mixed} obj
  * @return {Boolean}
@@ -193,13 +193,11 @@ function isPromise(obj) {
  */
 
 function isGenerator(obj) {
-  if (!obj) return false;
-  if ('[object Generator]' == toString.call(obj)) return true;
-  if (obj.constructor && 'Generator' == obj.constructor.name) return true;
+  return obj && 'function' == typeof obj.next && 'function' == typeof obj.throw;
 }
 
 /**
- * Check if `fn` is a generator function.
+ * Check if `obj` is a generator function.
  *
  * @param {Mixed} obj
  * @return {Boolean}
