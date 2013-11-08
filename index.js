@@ -71,7 +71,7 @@ function co(fn) {
     }
 
     // invalid
-    next(new Error('yield a function, promise, generator, or array'));
+    next(new Error('yield a function, promise, generator, array, or object'));
   }
 
   return function(){
@@ -106,7 +106,7 @@ function toThunk(obj, ctx) {
  *
  * @param {Array}
  * @return {Function}
- * @api public
+ * @api private
  */
 
 function arrayToThunk(fns) {
@@ -157,7 +157,7 @@ function arrayToThunk(fns) {
  *
  * @param {Object} obj
  * @return {Function}
- * @api public
+ * @api private
  */
 
 function objectToThunk(obj){

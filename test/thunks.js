@@ -18,7 +18,7 @@ describe('co(fn)', function(){
       this.should.equal(foo);
     })(done);
   })
-  
+
   describe('with no yields', function(){
     it('should work', function(done){
       co(function *(){
@@ -200,7 +200,7 @@ describe('co(fn)', function(){
           errors.push(err.message);
         }
 
-        var msg = 'yield a function, promise, generator, or array';
+        var msg = 'yield a function, promise, generator, array, or object';
         errors.should.eql([msg, msg]);
       })(done);
     })
