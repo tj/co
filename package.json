@@ -17,6 +17,9 @@
     "request": "~2.27.0",
     "matcha": "~0.4.0"
   },
+  "scripts": {
+    "test": "make test"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
