@@ -1,8 +1,4 @@
-/**
- * toString reference.
- */
 
-var toString = Object.prototype.toString;
 var slice = Array.prototype.slice;
 
 /**
