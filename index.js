@@ -5,7 +5,7 @@ var slice = Array.prototype.slice;
  * Expose `co`.
  */
 
-exports = module.exports = co;
+module.exports = co;
 
 /**
  * Wrap the given generator `fn` and
@@ -83,15 +83,33 @@ function co(fn) {
 }
 
 /**
- * Join the given `fns`.
+ * Convert `obj` into a normalized thunk.
  *
- * @param {Array|Function} ...
+ * @param {Mixed} obj
+ * @param {Mixed} ctx
+ * @return {Function}
+ * @api private
+ */
+
+function toThunk(obj, ctx) {
+  var fn = obj;
+  if (Array.isArray(obj)) fn = arrayToThunk.call(ctx, obj);
+  if ('[object Object]' == toString.call(obj)) fn = objectToThunk.call(ctx, obj);
+  if (isGeneratorFunction(obj)) obj = obj.call(ctx);
+  if (isGenerator(obj)) fn = co.call(ctx, obj);
+  if (isPromise(obj)) fn = promiseToThunk(obj);
+  return fn;
+}
+
+/**
+ * Convert an array of yieldables to a thunk.
+ *
+ * @param {Array}
  * @return {Function}
  * @api public
  */
 
-exports.join = function(fns) {
-  if (!Array.isArray(fns)) fns = slice.call(arguments);
+function arrayToThunk(fns) {
   var ctx = this;
 
   return function(done){
@@ -132,18 +150,17 @@ exports.join = function(fns) {
       }
     }
   }
-};
+}
 
 /**
- * Map the given object of yieldables.
+ * Convert an object of yieldables to a thunk.
  *
  * @param {Object} obj
  * @return {Function}
  * @api public
  */
 
-exports.map = function(obj){
-  obj = obj || {};
+function objectToThunk(obj){
   var ctx = this;
 
   return function(done){
@@ -185,25 +202,6 @@ exports.map = function(obj){
       }
     }
   }
-};
-
-/**
- * Convert `obj` into a normalized thunk.
- *
- * @param {Mixed} obj
- * @param {Mixed} ctx
- * @return {Function}
- * @api private
- */
-
-function toThunk(obj, ctx) {
-  var fn = obj;
-  if (Array.isArray(obj)) fn = exports.join.call(ctx, obj);
-  if ('[object Object]' == toString.call(obj)) fn = exports.map.call(ctx, obj);
-  if (isGeneratorFunction(obj)) obj = obj.call(ctx);
-  if (isGenerator(obj)) fn = co.call(ctx, obj);
-  if (isPromise(obj)) fn = promiseToThunk(obj);
-  return fn;
 }
 
 /**
