@@ -37,9 +37,19 @@ suite('co()', function(){
     })(done);
   })
 
-  bench('thunk join', function(done){
+  bench('arrays', function(done){
     co(function *(){
       yield [fun, fun, fun];
+    })(done);
+  })
+
+  bench('objects', function(done){
+    co(function *(){
+      yield {
+        a: fun,
+        b: fun,
+        c: fun
+      };
     })(done);
   })
 
