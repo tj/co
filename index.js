@@ -135,6 +135,59 @@ exports.join = function(fns) {
 };
 
 /**
+ * Map the given object of yieldables.
+ *
+ * @param {Object} obj
+ * @return {Function}
+ * @api public
+ */
+
+exports.map = function(obj){
+  obj = obj || {};
+  var ctx = this;
+
+  return function(done){
+    var keys = Object.keys(obj);
+    var pending = keys.length;
+    var results = {};
+    var finished;
+
+    if (!pending) {
+      setImmediate(function(){
+        done(null, results)
+      });
+      return;
+    }
+
+    for (var i = 0; i < keys.length; i++) {
+      run(obj[keys[i]], keys[i]);
+    }
+
+    function run(fn, key) {
+      if (finished) return;
+      try {
+        fn = toThunk(fn, ctx);
+
+        fn.call(ctx, function(err, res){
+          if (finished) return;
+
+          if (err) {
+            finished = true;
+            return done(err);
+          }
+
+          results[key] = res;
+          --pending || done(null, results);
+        });
+      } catch (err) {
+        finished = true;
+        done(err);
+      }
+    }
+  }
+};
+
+/**
  * Convert `obj` into a normalized thunk.
  *
  * @param {Mixed} obj
@@ -146,6 +199,7 @@ exports.join = function(fns) {
 function toThunk(obj, ctx) {
   var fn = obj;
   if (Array.isArray(obj)) fn = exports.join.call(ctx, obj);
+  if ('[object Object]' == toString.call(obj)) fn = exports.map.call(ctx, obj);
   if (isGeneratorFunction(obj)) obj = obj.call(ctx);
   if (isGenerator(obj)) fn = co.call(ctx, obj);
   if (isPromise(obj)) fn = promiseToThunk(obj);
