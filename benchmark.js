@@ -8,7 +8,7 @@ function fun(done) {
 }
 
 function *gen() {
-  
+
 }
 
 function getPromise(val, err) {
@@ -19,8 +19,8 @@ function getPromise(val, err) {
 }
 
 suite('co()', function(){
-  set('mintime', 1000)
-  
+  set('mintime', process.env.MINTIME | 0 || 1)
+
   bench('promises', function(done){
     co(function *(){
       yield getPromise(1);
@@ -40,6 +40,22 @@ suite('co()', function(){
   bench('thunk join', function(done){
     co(function *(){
       yield [fun, fun, fun];
+    })(done);
+  })
+
+  bench('generators', function(done){
+    co(function *(){
+      yield gen();
+      yield gen();
+      yield gen();
+    })(done);
+  })
+
+  bench('generators delegated', function(done){
+    co(function *(){
+      yield* gen();
+      yield* gen();
+      yield* gen();
     })(done);
   })
 
