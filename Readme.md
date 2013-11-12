@@ -54,6 +54,7 @@ co(function *(){
   - promises
   - thunks (functions)
   - array (parallel execution)
+  - objects (parallel execution)
   - generators (delegation)
   - generator functions (delegation)
 
