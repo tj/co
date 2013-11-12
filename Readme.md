@@ -251,10 +251,9 @@ co(function *(cmd) {
 })('pwd', done);
 ```
 
-### co.join(fn...)
+### yield array
 
-  The `co.join()` utility function allows you to pass multiple thunks, or an array
-  of thunks and "join" them all into a single thunk which executes them all concurrently,
+  By yielding an array of thunks you may "join" them all into a single thunk which executes them all concurrently,
   instead of in sequence. Note that the resulting array ordering _is_ retained.
 
 ```js
@@ -279,7 +278,7 @@ co(function *(){
   var res = yield join(a, b, c);
   console.log(res);
   // => [ 13, 1687, 129 ]
-});
+})()
 ```
 
   As an alias of `join(array)` you may simply `yield` an array:
@@ -292,7 +291,7 @@ co(function *(){
   var res = yield [a, b, c];
   console.log(res);
   // => [ 13, 1687, 129 ]
-});
+})()
 ```
 
   Nested joins may also be expressed as simple nested arrays:
@@ -311,6 +310,34 @@ var b = [
 ];
 
 console.log(yield [a, b]);
+```
+
+### yield object
+
+  Yielding an object behaves much like yielding an array, however recursion is supported:
+
+```js
+co(function *(){
+  var user = yield {
+    name: {
+      first: get('name.first'),
+      last: get('name.last')
+    }
+  };
+})()
+```
+
+  Here is the sequential equivalent without yielding an object:
+
+```js
+co(function *(){
+  var user = {
+    name: {
+      first: yield get('name.first'),
+      last: yield get('name.last')
+    }
+  };
+})()
 ```
 
 ### Performance
