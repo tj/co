@@ -1,11 +1,15 @@
+/**
+ * toString reference.
+ */
 
+var toString = Object.prototype.toString;
 var slice = Array.prototype.slice;
 
 /**
  * Expose `co`.
  */
 
-exports = module.exports = co;
+module.exports = co;
 
 /**
  * Wrap the given generator `fn` and
@@ -71,7 +75,7 @@ function co(fn) {
     }
 
     // invalid
-    next(new Error('yield a function, promise, generator, or array'));
+    next(new Error('yield a function, promise, generator, array, or object'));
   }
 
   return function(){
@@ -83,15 +87,33 @@ function co(fn) {
 }
 
 /**
- * Join the given `fns`.
+ * Convert `obj` into a normalized thunk.
  *
- * @param {Array|Function} ...
+ * @param {Mixed} obj
+ * @param {Mixed} ctx
  * @return {Function}
- * @api public
+ * @api private
  */
 
-exports.join = function(fns) {
-  if (!Array.isArray(fns)) fns = slice.call(arguments);
+function toThunk(obj, ctx) {
+  var fn = obj;
+  if (Array.isArray(obj)) fn = arrayToThunk.call(ctx, obj);
+  if ('[object Object]' == toString.call(obj)) fn = objectToThunk.call(ctx, obj);
+  if (isGeneratorFunction(obj)) obj = obj.call(ctx);
+  if (isGenerator(obj)) fn = co.call(ctx, obj);
+  if (isPromise(obj)) fn = promiseToThunk(obj);
+  return fn;
+}
+
+/**
+ * Convert an array of yieldables to a thunk.
+ *
+ * @param {Array}
+ * @return {Function}
+ * @api private
+ */
+
+function arrayToThunk(fns) {
   var ctx = this;
 
   return function(done){
@@ -132,24 +154,58 @@ exports.join = function(fns) {
       }
     }
   }
-};
+}
 
 /**
- * Convert `obj` into a normalized thunk.
+ * Convert an object of yieldables to a thunk.
  *
- * @param {Mixed} obj
- * @param {Mixed} ctx
+ * @param {Object} obj
  * @return {Function}
  * @api private
  */
 
-function toThunk(obj, ctx) {
-  var fn = obj;
-  if (Array.isArray(obj)) fn = exports.join.call(ctx, obj);
-  if (isGeneratorFunction(obj)) obj = obj.call(ctx);
-  if (isGenerator(obj)) fn = co.call(ctx, obj);
-  if (isPromise(obj)) fn = promiseToThunk(obj);
-  return fn;
+function objectToThunk(obj){
+  var ctx = this;
+
+  return function(done){
+    var keys = Object.keys(obj);
+    var pending = keys.length;
+    var results = {};
+    var finished;
+
+    if (!pending) {
+      setImmediate(function(){
+        done(null, results)
+      });
+      return;
+    }
+
+    for (var i = 0; i < keys.length; i++) {
+      run(obj[keys[i]], keys[i]);
+    }
+
+    function run(fn, key) {
+      if (finished) return;
+      try {
+        fn = toThunk(fn, ctx);
+
+        fn.call(ctx, function(err, res){
+          if (finished) return;
+
+          if (err) {
+            finished = true;
+            return done(err);
+          }
+
+          results[key] = res;
+          --pending || done(null, results);
+        });
+      } catch (err) {
+        finished = true;
+        done(err);
+      }
+    }
+  }
 }
 
 /**
