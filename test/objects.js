@@ -31,4 +31,18 @@ describe('co(* -> yield {})', function(){
       Object.keys(res).should.have.length(0);
     })(done);
   })
+
+  it('should ignore non-thunkable properties', function(done){
+    co(function *(){
+      var res = yield {
+        name: { first: 'tobi' },
+        age: 2,
+        address: read('index.js', 'utf8')
+      };
+
+      res.name.should.eql({ first: 'tobi' });
+      res.age.should.equal(2);
+      res.address.should.include('exports');
+    })(done);
+  })
 })

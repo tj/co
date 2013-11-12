@@ -195,6 +195,11 @@ function objectToThunk(obj){
       try {
         fn = toThunk(fn, ctx);
 
+        if ('function' != typeof fn) {
+          results[key] = fn;
+          return --pending || done(null, results);
+        }
+
         fn.call(ctx, function(err, res){
           if (finished) return;
 
