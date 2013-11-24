@@ -1,4 +1,3 @@
-
 /**
  * toString() reference.
  */
@@ -286,6 +285,7 @@ function isGeneratorFunction(obj) {
  */
 
 function error(err) {
+  if (!err) return;
   setImmediate(function(){
     throw err;
   });
