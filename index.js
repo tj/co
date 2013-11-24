@@ -68,12 +68,9 @@ function co(fn) {
       var called = false;
       try {
         ret.value.call(ctx, function(){
-          var args = arguments;
-          setImmediate(function(){
-            if (called) return;
-            called = true;
-            next.apply(ctx, args);
-          });
+          if (called) return;
+          called = true;
+          next.apply(ctx, arguments);
         });
       } catch (e) {
         setImmediate(function(){
