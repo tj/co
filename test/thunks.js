@@ -75,6 +75,20 @@ describe('co(fn)', function(){
     })
   })
 
+  describe('when an error is passed then thrown', function(){
+    it('should only catch the first error only', function(done){
+      co(function *() {
+        yield function (done){
+          done(new Error('first'));
+          throw new Error('second');
+        }
+      })(function(err){
+        err.message.should.equal('first');
+        done();
+      });
+    })
+  })
+
   describe('when an error is passed', function(){
     it('should throw and resume', function(done){
       var error;

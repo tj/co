@@ -70,10 +70,20 @@ function co(fn) {
 
     // run
     if ('function' == typeof ret.value) {
+      var called = false;
       try {
-        ret.value.call(ctx, next);
+        ret.value.call(ctx, function(){
+          var args = arguments;
+          setImmediate(function(){
+            if (called) return;
+            called = true;
+            next.apply(ctx, args);
+          });
+        });
       } catch (e) {
         setImmediate(function(){
+          if (called) return;
+          called = true;
           next(e);
         });
       }
