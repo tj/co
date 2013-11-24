@@ -44,7 +44,6 @@ function co(fn) {
       try {
         ret = gen.throw(err);
       } catch (e) {
-        if (!done) throw e;
         return done(e);
       }
     }
@@ -54,16 +53,12 @@ function co(fn) {
       try {
         ret = gen.next(res);
       } catch (e) {
-        if (!done) throw e;
         return done(e);
       }
     }
 
     // done
-    if (ret.done) {
-      if (done) done(null, ret.value);
-      return;
-    }
+    if (ret.done) return done(null, ret.value);
 
     // normalize
     ret.value = toThunk(ret.value, ctx);
@@ -94,10 +89,9 @@ function co(fn) {
     next(new Error('yield a function, promise, generator, array, or object'));
   }
 
-  return function(){
-    var args = slice.call(arguments);
-    done = args.pop();
-    gen = isGenerator(fn) ? fn : fn.apply(ctx, args);
+  return function(_done){
+    done = _done || error;
+    gen = isGenerator(fn) ? fn : fn.call(ctx);
     next();
   }
 }
@@ -279,4 +273,23 @@ function isGenerator(obj) {
 
 function isGeneratorFunction(obj) {
   return obj && obj.constructor && 'GeneratorFunction' == obj.constructor.name;
+}
+
+
+/**
+ * Throw `err` in a new stack.
+ *
+ * This is used when co() is invoked
+ * without supplying a callback, which
+ * should only be for demonstrational
+ * purposes.
+ *
+ * @param {Error} err
+ * @api private
+ */
+
+function error(err) {
+  setImmediate(function(){
+    throw err;
+  });
 }

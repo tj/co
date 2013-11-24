@@ -293,5 +293,53 @@ describe('co(fn)', function(){
         done();
       });
     })
+
+    describe('when no callback is provided', function(){
+      it('should rethrow', function(done){
+        var addProcessListeners = removeProcessListeners();
+
+        process.once('uncaughtException', function(err){
+          err.message.should.equal('boom');
+          addProcessListeners();
+          done();
+        })
+
+        co(function *(){
+          yield function (done) {
+            setImmediate(function () {
+              done(new Error('boom'));
+            })
+          }
+        })();
+      })
+
+      it('should rethrow on a synchronous thunk', function(done){
+        var addProcessListeners = removeProcessListeners();
+
+        process.once('uncaughtException', function(err){
+          err.message.should.equal('boom');
+          addProcessListeners();
+          done();
+        })
+
+        co(function *(){
+          yield function (done) {
+            done(new Error('boom'));
+          }
+        })();
+      })
+    })
   })
 })
+
+function removeProcessListeners(){
+  // Remove mocha listeners first.
+  var listeners = process.listeners('uncaughtException');
+  process.removeAllListeners('uncaughtException');
+
+  return function addProcessListeners(){
+    listeners.forEach(function(listener){
+      process.on('uncaughtException', listener);
+    });
+  }
+}
