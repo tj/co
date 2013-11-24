@@ -29,20 +29,5 @@ describe('co(fn)', function(){
         res.should.eql(['yay', 'yay', 'yay']);
       })(done);
     })
-
-    it('should pass arguments into generator', function(done) {
-      co(function *(a, b) {
-        assert('yay' == a);
-        assert('wahoo' == b);
-      })('yay', 'wahoo', done);
-    });
-
-    it('should pass arguments into generator with yields', function(done) {
-      co(function *(a, b) {
-        assert('yay' == a);
-        yield work
-        assert('wahoo' == b);
-      })('yay', 'wahoo', done);
-    });
   })
 })
