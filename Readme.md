@@ -108,20 +108,20 @@ function foo() {
   assert(this == ctx);
 }
 
-co.call(ctx, function *(){
+co(function *(){
   assert(this == ctx);
   yield foo;
-})()
+}).call(ctx)
 ```
 
   You also pass arguments through the generator:
 
 ```js
-co.call(ctx, function *(a){
+co(function *(a){
   assert(this == ctx);
   assert('yay' == a);
   yield foo;
-})('yay');
+}).call(ctx, 'yay');
 ```
 
 ## API
