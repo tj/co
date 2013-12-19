@@ -1,3 +1,9 @@
+3.0.0 / 2013-12-19
+==================
+
+ * better error handling - fixes "generator already finished" errors
+ * `co(function *(){})` now returns a reusable thunk
+ * `this` must now be passed through the returned thunk, ex. `co(function *(){}).call(this)`
 
 2.3.0 / 2013-11-12 
 ==================
