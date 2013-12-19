@@ -26,69 +26,88 @@ module.exports = co;
  */
 
 function co(fn) {
-  var ctx = this;
-  var done;
-  var gen;
+  var isGenFun = isGeneratorFunction(fn);
 
-  function next(err, res) {
-    var ret;
+  return function (done) {
+    var ctx = this;
+    var gen;
 
-    // multiple args
-    if (arguments.length > 2) {
-      res = slice.call(arguments, 1);
+    if (isGenFun) {
+      // we only need to parse the arguments
+      // if gen is a generator function.
+      var args = slice.call(arguments);
+
+      // no callback provided
+      if (!args.length) done = error;
+      // done is already the callback
+      else if (1 == args.length && 'function' == typeof done) ;
+      // callback is the last argument
+      else if ('function' == typeof args[args.length - 1]) done = args.pop();
+      // arguments provided, but no callbacks
+      else done = error;
+
+      gen = fn.apply(this, args);
+    } else {
+      // if gen is already a generator,
+      // only a callback is expected.
+      done = done || error;
+      gen = fn;
     }
 
-    // error
-    if (err) {
-      try {
-        ret = gen.throw(err);
-      } catch (e) {
-        return done(e);
-      }
-    }
-
-    // ok
-    if (!err) {
-      try {
-        ret = gen.next(res);
-      } catch (e) {
-        return done(e);
-      }
-    }
-
-    // done
-    if (ret.done) return done(null, ret.value);
-
-    // normalize
-    ret.value = toThunk(ret.value, ctx);
-
-    // run
-    if ('function' == typeof ret.value) {
-      var called = false;
-      try {
-        ret.value.call(ctx, function(){
-          if (called) return;
-          called = true;
-          next.apply(ctx, arguments);
-        });
-      } catch (e) {
-        setImmediate(function(){
-          if (called) return;
-          called = true;
-          next(e);
-        });
-      }
-      return;
-    }
-
-    // invalid
-    next(new Error('yield a function, promise, generator, array, or object'));
-  }
-
-  return function(_done){
-    done = _done || error;
-    gen = isGenerator(fn) ? fn : fn.call(ctx);
     next();
+
+    function next(err, res) {
+      var ret;
+
+      // multiple args
+      if (arguments.length > 2) res = slice.call(arguments, 1);
+
+      // error
+      if (err) {
+        try {
+          ret = gen.throw(err);
+        } catch (e) {
+          return done(e);
+        }
+      }
+
+      // ok
+      if (!err) {
+        try {
+          ret = gen.next(res);
+        } catch (e) {
+          return done(e);
+        }
+      }
+
+      // done
+      if (ret.done) return done(null, ret.value);
+
+      // normalize
+      ret.value = toThunk(ret.value, ctx);
+
+      // run
+      if ('function' == typeof ret.value) {
+        var called = false;
+        try {
+          ret.value.call(ctx, function(){
+            if (called) return;
+            called = true;
+            next.apply(ctx, arguments);
+          });
+        } catch (e) {
+          setImmediate(function(){
+            if (called) return;
+            called = true;
+            next(e);
+          });
+        }
+        return;
+      }
+
+      // invalid
+      next(new Error('yield a function, promise, generator, array, or object'));
+    }
   }
 }
 
