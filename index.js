@@ -30,7 +30,12 @@ function co(fn) {
 
   return function (done) {
     var ctx = this;
-    var gen;
+
+    // in toThink() below we invoke co()
+    // with a generator, so optimize for
+    // this case
+    var gen = fn;
+    done = done || error;
 
     if (isGenFun) {
       // we only need to parse the arguments
@@ -47,11 +52,6 @@ function co(fn) {
       else done = error;
 
       gen = fn.apply(this, args);
-    } else {
-      // if gen is already a generator,
-      // only a callback is expected.
-      done = done || error;
-      gen = fn;
     }
 
     next();
