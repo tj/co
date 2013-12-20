@@ -123,7 +123,7 @@ function toThunk(obj, ctx) {
   if (Array.isArray(obj)) fn = arrayToThunk.call(ctx, obj);
   if ('[object Object]' == toString.call(obj)) fn = objectToThunk.call(ctx, obj);
   if (isGeneratorFunction(obj)) obj = obj.call(ctx);
-  if (isGenerator(obj)) fn = co.call(ctx, obj);
+  if (isGenerator(obj)) fn = co(obj);
   if (isPromise(obj)) fn = promiseToThunk(obj);
   return fn;
 }
