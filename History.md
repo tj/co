@@ -1,6 +1,11 @@
 3.0.0 / 2013-12-19
 ==================
 
+ * fixed: callback passed as an argument to generators
+
+3.0.0 / 2013-12-19
+==================
+
  * change: `co(function *(){})` now returns a reusable thunk
  * change: `this` must now be passed through the returned thunk, ex. `co(function *(){}).call(this)`
  * fix "generator already finished" errors

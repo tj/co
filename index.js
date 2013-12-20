@@ -44,8 +44,6 @@ function co(fn) {
 
       // no callback provided
       if (!args.length) done = error;
-      // done is already the callback
-      else if (1 == args.length && 'function' == typeof done) ;
       // callback is the last argument
       else if ('function' == typeof args[args.length - 1]) done = args.pop();
       // arguments provided, but no callbacks
