@@ -31,7 +31,7 @@ function co(fn) {
   return function (done) {
     var ctx = this;
 
-    // in toThink() below we invoke co()
+    // in toThunk() below we invoke co()
     // with a generator, so optimize for
     // this case
     var gen = fn;
