@@ -35,7 +35,6 @@ function co(fn) {
     // with a generator, so optimize for
     // this case
     var gen = fn;
-    done = done || error;
 
     if (isGenFun) {
       // we only need to parse the arguments
@@ -50,6 +49,8 @@ function co(fn) {
       else done = error;
 
       gen = fn.apply(this, args);
+    } else {
+      done = done || error;
     }
 
     next();
