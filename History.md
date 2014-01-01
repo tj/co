@@ -1,3 +1,13 @@
+3.0.2 / 2014-01-01
+==================
+
+ * fixed: nil arguments replaced with error fn
+
+3.0.1 / 2013-12-19
+==================
+
+ * fixed: callback passed as an argument to generators
+
 3.0.0 / 2013-12-19
 ==================
 
