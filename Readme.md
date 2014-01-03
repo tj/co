@@ -229,7 +229,7 @@ co(function *(){
 })()
 ```
 
-  Or using join:
+  Or:
 
 ```js
 co(function *(){
@@ -260,7 +260,6 @@ co(function *(cmd) {
 ```js
 
 var co = require('co');
-var join = co.join;
 var fs = require('fs');
 
 function size(file) {
@@ -276,26 +275,15 @@ co(function *(){
   var a = size('.gitignore');
   var b = size('index.js');
   var c = size('Makefile');
-  var res = yield join(a, b, c);
-  console.log(res);
-  // => [ 13, 1687, 129 ]
-})()
-```
-
-  As an alias of `join(array)` you may simply `yield` an array:
-
-```js
-co(function *(){
-  var a = size('.gitignore');
-  var b = size('index.js');
-  var c = size('Makefile');
   var res = yield [a, b, c];
   console.log(res);
   // => [ 13, 1687, 129 ]
 })()
 ```
 
-  Nested joins may also be expressed as simple nested arrays:
+```
+
+  Nested arrays may also be expressed as simple nested arrays:
 
 ```js
 var a = [
