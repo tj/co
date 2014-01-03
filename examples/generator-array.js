@@ -2,7 +2,6 @@
 var request = require('request');
 var thunk = require('thunkify');
 var co = require('..');
-var join = co.join;
 
 var get = thunk(request.get);
 
