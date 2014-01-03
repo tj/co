@@ -10,7 +10,7 @@ var fs = require('fs');
 // var res = yield [a, b, c] to execute them in
 // parallel.
 
-// for an alternative see ./join.js
+// for an alternative see ./array.js
 // also if writing all this boilerplate
 // is not to your liking check out "thunkify"
 
