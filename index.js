@@ -39,14 +39,10 @@ function co(fn) {
     if (isGenFun) {
       // we only need to parse the arguments
       // if gen is a generator function.
-      var args = slice.call(arguments);
-
-      // no callback provided
-      if (!args.length) done = error;
-      // callback is the last argument
-      else if ('function' == typeof args[args.length - 1]) done = args.pop();
-      // arguments provided, but no callbacks
-      else done = error;
+      var args = slice.call(arguments), len = args.length;
+      // if callback provided then use it otherwise use error function
+      var hasCbk = len && 'function' == typeof args[len - 1];
+      done = hasCbk ? args.pop() : error;
 
       gen = fn.apply(this, args);
     } else {
