@@ -281,9 +281,7 @@ co(function *(){
 })()
 ```
 
-```
-
-  Nested arrays may also be expressed as simple nested arrays:
+Nested arrays may also be expressed as simple nested arrays:
 
 ```js
 var a = [
