@@ -7,7 +7,8 @@
   way.
 
   Currently you must use the `--harmony-generators` flag when
-  running node 0.11.x to get access to generators.
+  running node 0.11.x to get access to generators. Or use gnode to spawn your node instance. 
+  However note that performance degrades quickly compared to 0.11.x.
 
   Co is careful to relay any errors that occur back to the generator, including those
   within the thunk, or from the thunk's callback. "Uncaught" exceptions in the generator
@@ -30,6 +31,9 @@ $ npm install co
 
 ```js
 var co = require('co');
+var thunkify = require('thunkify');
+var request = require('request');
+var get = thunkify(request.get);
 
 co(function *(){
   var a = yield get('http://google.com');
