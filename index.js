@@ -115,63 +115,12 @@ function co(fn) {
 
 function toThunk(obj, ctx) {
   var fn = obj;
-  if (Array.isArray(obj)) fn = arrayToThunk.call(ctx, obj);
+  if (Array.isArray(obj)) fn = objectToThunk.call(ctx, obj);
   if ('[object Object]' == toString.call(obj)) fn = objectToThunk.call(ctx, obj);
   if (isGeneratorFunction(obj)) obj = obj.call(ctx);
   if (isGenerator(obj)) fn = co(obj);
   if (isPromise(obj)) fn = promiseToThunk(obj);
   return fn;
-}
-
-/**
- * Convert an array of yieldables to a thunk.
- *
- * @param {Array}
- * @return {Function}
- * @api private
- */
-
-function arrayToThunk(fns) {
-  var ctx = this;
-
-  return function(done){
-    var pending = fns.length;
-    var results = new Array(pending);
-    var finished;
-
-    if (!pending) {
-      setImmediate(function(){
-        done(null, results);
-      });
-      return;
-    }
-
-    for (var i = 0; i < fns.length; i++) {
-      run(fns[i], i);
-    }
-
-    function run(fn, i) {
-      if (finished) return;
-      try {
-        fn = toThunk(fn, ctx);
-
-        fn.call(ctx, function(err, res){
-          if (finished) return;
-
-          if (err) {
-            finished = true;
-            return done(err);
-          }
-
-          results[i] = res;
-          --pending || done(null, results);
-        });
-      } catch (err) {
-        finished = true;
-        done(err);
-      }
-    }
-  }
 }
 
 /**
@@ -188,7 +137,7 @@ function objectToThunk(obj){
   return function(done){
     var keys = Object.keys(obj);
     var pending = keys.length;
-    var results = {};
+    var results = new obj.constructor();
     var finished;
 
     if (!pending) {
