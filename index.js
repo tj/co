@@ -49,6 +49,13 @@ function co(fn) {
 
     next();
 
+    // #92
+    // wrap the callback in a setImmediate
+    // so that any of its errors aren't caught by `co`
+    function exit(err, res) {
+      setImmediate(done.bind(ctx, err, res));
+    }
+
     function next(err, res) {
       var ret;
 
@@ -60,7 +67,7 @@ function co(fn) {
         try {
           ret = gen.throw(err);
         } catch (e) {
-          return done(e);
+          return exit(e);
         }
       }
 
@@ -69,12 +76,12 @@ function co(fn) {
         try {
           ret = gen.next(res);
         } catch (e) {
-          return done(e);
+          return exit(e);
         }
       }
 
       // done
-      if (ret.done) return done(null, ret.value);
+      if (ret.done) return exit(null, ret.value);
 
       // normalize
       ret.value = toThunk(ret.value, ctx);
