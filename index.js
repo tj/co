@@ -141,7 +141,7 @@ function toThunk(obj, ctx) {
     return obj;
   }
 
-  if (obj && 'object' == typeof obj) {
+  if (obj && 'object' == typeof obj && toString.call(obj) !== '[object Date]') {
     return objectToThunk.call(ctx, obj);
   }
 
