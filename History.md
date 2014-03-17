@@ -1,4 +1,10 @@
 
+3.0.5 / 2014-03-17
+==================
+
+ * fix object/array test failure which tries to enumerate dates. Closes #98
+ * fix final callback error propagation. Closes #92
+
 3.0.4 / 2014-02-17
 ==================
 
