@@ -38,6 +38,7 @@ describe('co(* -> yield {})', function(){
         name: { first: 'tobi' },
         age: 2,
         address: read('index.js', 'utf8'),
+        tobi: new Pet('tobi'),
         now: new Date
       };
 
@@ -45,8 +46,14 @@ describe('co(* -> yield {})', function(){
 
       res.name.should.eql({ first: 'tobi' });
       res.age.should.equal(2);
+      res.tobi.name.should.equal('tobi');
       res.now.should.equal(foo.now);
       res.address.should.include('exports');
     })(done);
   })
 })
+
+function Pet(name) {
+  this.name = name;
+  this.something = function(){};
+}
