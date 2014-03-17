@@ -141,7 +141,7 @@ function toThunk(obj, ctx) {
     return obj;
   }
 
-  if (obj && 'object' == typeof obj && obj.constructor === Object) {
+  if (isObject(obj) || Array.isArray(obj)) {
     return objectToThunk.call(ctx, obj);
   }
 
@@ -257,6 +257,17 @@ function isGeneratorFunction(obj) {
   return obj && obj.constructor && 'GeneratorFunction' == obj.constructor.name;
 }
 
+/**
+ * Check for plain object.
+ *
+ * @param {Mixed} val
+ * @return {Boolean}
+ * @api private
+ */
+
+function isObject(val) {
+  return val && Object == val.constructor;
+}
 
 /**
  * Throw `err` in a new stack.
