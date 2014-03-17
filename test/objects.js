@@ -34,14 +34,18 @@ describe('co(* -> yield {})', function(){
 
   it('should ignore non-thunkable properties', function(done){
     co(function *(){
-      var res = yield {
+      var foo = {
         name: { first: 'tobi' },
         age: 2,
-        address: read('index.js', 'utf8')
+        address: read('index.js', 'utf8'),
+        now: new Date
       };
+
+      var res = yield foo
 
       res.name.should.eql({ first: 'tobi' });
       res.age.should.equal(2);
+      res.now.should.equal(foo.now);
       res.address.should.include('exports');
     })(done);
   })
