@@ -39,9 +39,9 @@ co(function *(){
   var a = yield get('http://google.com');
   var b = yield get('http://yahoo.com');
   var c = yield get('http://cloudup.com');
-  console.log(a.status);
-  console.log(b.status);
-  console.log(c.status);
+  console.log(a[0].statusCode);
+  console.log(b[0].statusCode);
+  console.log(c[0].statusCode);
 })()
 
 co(function *(){
