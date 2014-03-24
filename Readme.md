@@ -51,6 +51,17 @@ co(function *(){
   var res = yield [a, b, c];
   console.log(res);
 })()
+
+// Error handling
+co(function *(){
+  try {
+    var example = get('http://badhost.kkk');
+    var res = yield(example);
+    console.log(res);
+  } catch(e) {
+    console.log(e.code) // ENOTFOUND
+ }
+})()
 ```
 
 ## Yieldables
