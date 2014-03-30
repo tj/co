@@ -111,6 +111,17 @@ function read(path, encoding) {
 }
 ```
 
+  or to execute immediately like this (see [`thunkify`](https://github.com/visionmedia/node-thunkify)):
+
+```js
+function read(path, encoding) {
+  // call fs.readFile immediately, store result later
+  return function(cb){
+    // cb(err, result) or when result ready
+  }
+}
+```
+
 ## Receiver propagation
 
   When `co` is invoked with a receiver it will propagate to most yieldables,
@@ -196,10 +207,8 @@ function *bar(){
 }
 
 co(function *(){
-  var a = yield foo();
-  var b = yield bar();
-  console.log(a);
-  console.log(b);
+  var results = yield [foo(), bar()];
+  console.log(results);
 })()
 ```
 
@@ -212,26 +221,25 @@ var request = require('superagent');
 var get = thunkify(request.get);
 
 function *results() {
-  var a = yield get('http://google.com')
-  var b = yield get('http://yahoo.com')
-  var c = yield get('http://ign.com')
-  return [a.status, b.status, c.status]
+  var a = get('http://google.com')
+  var b = get('http://yahoo.com')
+  var c = get('http://ign.com')
+  return yield [a, b, c]
 }
 
 co(function *(){
   // 3 concurrent requests at a time
   var a = yield results;
   var b = yield results;
-  var c = yield results;
-  console.log(a, b, c);
+  console.log(a, b);
 
-  // 9 concurrent requests
-  console.log(yield [results, results, results]);
+  // 6 concurrent requests
+  console.log(yield [results, results]);
 })()
 ```
 
-  If a thunk is written to execute immediately you may acheive parallelism
-  by simply `yield`-ing _after_ the call. The following are equivalent since
+  If a thunk is written to execute immediately you may achieve parallelism
+  by simply `yield`-ing _after_ the call. The following are equivalent if
   each call kicks off execution immediately:
 
 ```js
