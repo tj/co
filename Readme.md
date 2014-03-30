@@ -7,7 +7,7 @@
   way.
 
   Currently you must use the `--harmony-generators` flag when
-  running node 0.11.x to get access to generators. Or use gnode to spawn your node instance. 
+  running node 0.11.x to get access to generators. Or use gnode to spawn your node instance.
   However note that performance degrades quickly compared to 0.11.x.
 
   Co is careful to relay any errors that occur back to the generator, including those
@@ -53,10 +53,10 @@ co(function *(){
 })()
 
 // Error handling
+
 co(function *(){
   try {
-    var example = get('http://badhost.kkk');
-    var res = yield(example);
+    var res = yield get('http://badhost.invalid');
     console.log(res);
   } catch(e) {
     console.log(e.code) // ENOTFOUND
