@@ -11,6 +11,12 @@ var toString = Object.prototype.toString;
 var slice = Array.prototype.slice;
 
 /**
+ * setImmediate() with fallback to process.nextTick() for node v0.8.x.
+ */
+
+var setImmediate = global.setImmediate || process.nextTick;
+
+/**
  * Expose `co`.
  */
 
