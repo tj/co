@@ -19,10 +19,11 @@ function getPromise(val, err) {
 }
 
 suite('co()', function(){
-  set('mintime', process.env.MINTIME | 0 || 1)
+  set('mintime', process.env.MINTIME | 0 || 2000)
 
   bench('promises', function(done){
     co(function *(){
+      yield setImmediate;
       yield getPromise(1);
       yield getPromise(2);
       yield getPromise(3);
@@ -31,6 +32,7 @@ suite('co()', function(){
 
   bench('thunks', function(done){
     co(function *(){
+      yield setImmediate;
       yield fun;
       yield fun;
       yield fun;
@@ -39,12 +41,14 @@ suite('co()', function(){
 
   bench('arrays', function(done){
     co(function *(){
+      yield setImmediate;
       yield [fun, fun, fun];
     })(done);
   })
 
   bench('objects', function(done){
     co(function *(){
+      yield setImmediate;
       yield {
         a: fun,
         b: fun,
@@ -55,6 +59,7 @@ suite('co()', function(){
 
   bench('generators', function(done){
     co(function *(){
+      yield setImmediate;
       yield gen();
       yield gen();
       yield gen();
@@ -63,6 +68,7 @@ suite('co()', function(){
 
   bench('generators delegated', function(done){
     co(function *(){
+      yield setImmediate;
       yield* gen();
       yield* gen();
       yield* gen();
@@ -71,6 +77,7 @@ suite('co()', function(){
 
   bench('generator functions', function(done){
     co(function *(){
+      yield setImmediate;
       yield gen;
       yield gen;
       yield gen;
