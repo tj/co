@@ -20,6 +20,9 @@
   "scripts": {
     "test": "make test"
   },
+  "files": [
+    "index.js"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
