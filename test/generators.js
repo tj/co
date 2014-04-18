@@ -40,8 +40,20 @@ describe('co(fn)', function(){
           [ 'one', 'two', 'three', 'four', 'five' ],
           [ 'one', 'two', 'three', 'four', 'five' ],
           [ 'one', 'two', 'three', 'four', 'five' ] ]);
-      
+
       })(done);
+    })
+
+    it('should catch errors', function(done){
+      co(function *(){
+        yield function *(){
+          throw new Error('boom');
+        }();
+      })(function(err){
+        assert(err);
+        assert(err.message == 'boom');
+        done();
+      });
     })
   })
 })
