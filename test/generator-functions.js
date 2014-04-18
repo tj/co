@@ -29,5 +29,17 @@ describe('co(fn)', function(){
         res.should.eql(['yay', 'yay', 'yay']);
       })(done);
     })
+
+    it('should catch errors', function(done){
+      co(function *(){
+        yield function *(){
+          throw new Error('boom');
+        };
+      })(function(err){
+        assert(err);
+        assert(err.message == 'boom');
+        done();
+      });
+    })
   })
 })
