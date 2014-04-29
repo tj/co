@@ -127,9 +127,6 @@ function co(fn) {
  */
 
 function toThunk(obj, ctx) {
-  if (Array.isArray(obj)) {
-    return objectToThunk.call(ctx, obj);
-  }
 
   if (isGeneratorFunction(obj)) {
     return co(obj.call(ctx));
