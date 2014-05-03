@@ -1,8 +1,3 @@
-/**
- * toString() reference.
- */
-
-var toString = Object.prototype.toString;
 
 /**
  * slice() reference.
