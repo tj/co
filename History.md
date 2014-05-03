@@ -1,4 +1,11 @@
 
+3.0.6 / 2014-05-03
+==================
+
+ * add `setImmediate()` fallback to `process.nextTick`
+ * remove duplicate code in toThunk
+ * update thunkify
+
 3.0.5 / 2014-03-17
 ==================
 
