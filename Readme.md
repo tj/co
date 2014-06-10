@@ -224,8 +224,9 @@ co(function *(){
   Or if the generator functions do not require arguments, simply `yield` the function:
 
 ```js
+var co = require('co');
 var thunkify = require('thunkify');
-var request = require('superagent');
+var request = require('request');
 
 var get = thunkify(request.get);
 
