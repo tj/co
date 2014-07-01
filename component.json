@@ -1,6 +1,6 @@
 {
   "name": "co",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "description": "generator async flow control goodness",
   "keywords": [
     "async",
@@ -10,5 +10,6 @@
     "coroutine"
   ],
   "repo": "visionmedia/co",
-  "scripts": ["index.js"]
+  "scripts": ["index.js"],
+  "licence": "MIT"
 }
