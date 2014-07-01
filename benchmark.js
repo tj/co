@@ -1,6 +1,6 @@
 
 var co = require('./');
-var Q = require('q');
+var bluebird = require('bluebird');
 
 
 function fun(done) {
@@ -12,9 +12,9 @@ function *gen() {
 }
 
 function getPromise(val, err) {
-  return Q.fcall(function(){
-    if (err) throw err;
-    return val;
+  return new bluebird(function (resolve, reject) {
+    if (err) reject(err);
+    else resolve(val);
   });
 }
 
