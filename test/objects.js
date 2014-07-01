@@ -51,6 +51,28 @@ describe('co(* -> yield {})', function(){
       res.address.should.include('exports');
     })(done);
   })
+
+  it('should preserve key order', function(done){
+    function timedThunk(time){
+      return function(cb){
+        setTimeout(cb.bind(null,null,0), time);
+      }
+    }
+    
+    co(function *(){
+      var before = {
+        sun: timedThunk(30),
+        rain: timedThunk(20),
+        moon: timedThunk(10)
+      };
+
+      var after = yield before;
+
+      var orderBefore = Object.keys(before).join(',');
+      var orderAfter = Object.keys(after).join(',');
+      orderBefore.should.equal(orderAfter);
+    })(done);
+  })
 })
 
 function Pet(name) {

@@ -153,11 +153,14 @@ function toThunk(obj, ctx) {
 
 function objectToThunk(obj){
   var ctx = this;
+  var isArray = Array.isArray(obj);
 
   return function(done){
     var keys = Object.keys(obj);
     var pending = keys.length;
-    var results = new obj.constructor();
+    var results = isArray
+      ? new Array(pending) // predefine the array length
+      : new obj.constructor();
     var finished;
 
     if (!pending) {
@@ -165,6 +168,13 @@ function objectToThunk(obj){
         done(null, results)
       });
       return;
+    }
+
+    // prepopulate object keys to preserve key ordering
+    if (!isArray) {
+      for (var i = 0; i < pending; i++) {
+        results[keys[i]] = undefined;
+      }
     }
 
     for (var i = 0; i < keys.length; i++) {
