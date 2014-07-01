@@ -207,8 +207,10 @@ describe('co(fn)', function(){
           errors.push(err.message);
         }
 
+        errors.length.should.equal(2);
         var msg = 'yield a function, promise, generator, array, or object';
-        errors.should.eql([msg, msg]);
+        errors[0].should.include(msg);
+        errors[1].should.include(msg);
       })(done);
     })
   })
