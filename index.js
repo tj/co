@@ -48,7 +48,9 @@ function co(fn) {
     // wrap the callback in a setImmediate
     // so that any of its errors aren't caught by `co`
     function exit(err, res) {
-      setImmediate(done.bind(ctx, err, res));
+      setImmediate(function(){
+        done.call(ctx, err, res);
+      });
     }
 
     function next(err, res) {
