@@ -21,7 +21,7 @@ function* sizeGen(file1, file2){
 
 var size = co(sizeGen);
 
-// use `size` as common async callbck style function
+// use `size` as common async callback style function
 // all arguments will pass to `function* sizeGen`
 
 size('.gitignore', 'README.md', function (err, res) {
