@@ -2,7 +2,7 @@
 
   [![Build Status](https://travis-ci.org/visionmedia/co.svg?branch=master)](https://travis-ci.org/visionmedia/co)
 
-  Generator based flow-control goodness for nodejs and the browser, using
+  Generator based control flow goodness for nodejs and the browser, using
   thunks _or_ promises, letting you write non-blocking code in a nice-ish
   way.
 
