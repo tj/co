@@ -1,7 +1,7 @@
 {
   "name": "co",
   "version": "3.1.0",
-  "description": "generator async flow control goodness",
+  "description": "generator async control flow goodness",
   "keywords": [
     "async",
     "flow",
