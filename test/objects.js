@@ -1,15 +1,14 @@
 
-var thunk = require('thunkify');
-var co = require('..');
-var fs = require('fs');
+var read = require('mz/fs').readFile;
+var assert = require('assert');
 
-var read = thunk(fs.readFile);
+var co = require('..');
 
 describe('co(* -> yield {})', function(){
-  it('should aggregate several thunks', function(done){
-    co(function *(){
+  it('should aggregate several thunks', function(){
+    return co(function *(){
       var a = read('index.js', 'utf8');
-      var b = read('Makefile', 'utf8');
+      var b = read('LICENSE', 'utf8');
       var c = read('package.json', 'utf8');
 
       var res = yield {
@@ -18,48 +17,54 @@ describe('co(* -> yield {})', function(){
         c: c
       };
 
-      Object.keys(res).should.have.length(3);
-      res.a.should.include('exports');
-      res.b.should.include('test');
-      res.c.should.include('devDependencies');
-    })(done);
+      assert.equal(3, Object.keys(res).length);
+      assert(~res.a.indexOf('exports'));
+      assert(~res.b.indexOf('MIT'));
+      assert(~res.c.indexOf('devDependencies'));
+    });
   })
 
-  it('should noop with no args', function(done){
-    co(function *(){
+  it('should noop with no args', function(){
+    return co(function *(){
       var res = yield {};
-      Object.keys(res).should.have.length(0);
-    })(done);
+      assert.equal(0, Object.keys(res).length);
+    });
   })
 
-  it('should ignore non-thunkable properties', function(done){
-    co(function *(){
+  it('should ignore non-thunkable properties', function(){
+    return co(function *(){
       var foo = {
         name: { first: 'tobi' },
         age: 2,
         address: read('index.js', 'utf8'),
         tobi: new Pet('tobi'),
-        now: new Date
+        now: new Date(),
+        falsey: false,
+        nully: null,
+        undefiney: undefined,
       };
 
-      var res = yield foo
+      var res = yield foo;
 
-      res.name.should.eql({ first: 'tobi' });
-      res.age.should.equal(2);
-      res.tobi.name.should.equal('tobi');
-      res.now.should.equal(foo.now);
-      res.address.should.include('exports');
-    })(done);
+      assert.equal('tobi', res.name.first);
+      assert.equal(2, res.age);
+      assert.equal('tobi', res.tobi.name);
+      assert.equal(foo.now, res.now);
+      assert.equal(false, foo.falsey);
+      assert.equal(null, foo.nully);
+      assert.equal(undefined, foo.undefiney);
+      assert(~res.address.indexOf('exports'));
+    });
   })
 
-  it('should preserve key order', function(done){
+  it('should preserve key order', function(){
     function timedThunk(time){
       return function(cb){
-        setTimeout(cb.bind(null,null,0), time);
+        setTimeout(cb, time);
       }
     }
-    
-    co(function *(){
+
+    return co(function *(){
       var before = {
         sun: timedThunk(30),
         rain: timedThunk(20),
@@ -70,8 +75,8 @@ describe('co(* -> yield {})', function(){
 
       var orderBefore = Object.keys(before).join(',');
       var orderAfter = Object.keys(after).join(',');
-      orderBefore.should.equal(orderAfter);
-    })(done);
+      assert.equal(orderBefore, orderAfter);
+    });
   })
 })
 

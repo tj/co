@@ -10,17 +10,16 @@
     "coroutine"
   ],
   "devDependencies": {
-    "should": "^3.0.0",
-    "mocha": "^2.0.0",
     "bluebird": "^2.0.0",
-    "thunkify": "^2.0.0",
-    "request": "^2.36.0",
-    "istanbul-harmony": "0"
+    "istanbul-harmony": "0",
+    "mocha": "^2.0.0",
+    "mz": "^1.0.2",
+    "request": "^2.36.0"
   },
   "scripts": {
-    "test": "mocha --harmony-generators --reporter spec --require should",
-    "test-cov": "node --harmony-generators node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter dot --require should",
-    "test-travis": "node --harmony-generators node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --reporter dot --require should"
+    "test": "mocha --harmony-generators --reporter spec",
+    "test-cov": "node --harmony-generators node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter dot",
+    "test-travis": "node --harmony-generators node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --reporter dot"
   },
   "files": [
     "index.js"

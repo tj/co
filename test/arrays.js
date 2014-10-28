@@ -1,29 +1,35 @@
 
-var thunk = require('thunkify');
-var co = require('..');
-var fs = require('fs');
+var read = require('mz/fs').readFile;
+var assert = require('assert');
 
-var read = thunk(fs.readFile);
+var co = require('..');
 
 describe('co(* -> yield [])', function(){
-  it('should aggregate several thunks', function(done){
-    co(function *(){
+  it('should aggregate several thunks', function(){
+    return co(function *(){
       var a = read('index.js', 'utf8');
-      var b = read('Makefile', 'utf8');
+      var b = read('LICENSE', 'utf8');
       var c = read('package.json', 'utf8');
 
       var res = yield [a, b, c];
-      res.should.have.length(3);
-      res[0].should.include('exports');
-      res[1].should.include('test');
-      res[2].should.include('devDependencies');
-    })(done);
+      assert.equal(3, res.length);
+      assert(~res[0].indexOf('exports'));
+      assert(~res[1].indexOf('MIT'));
+      assert(~res[2].indexOf('devDependencies'));
+    });
   })
 
-  it('should noop with no args', function(done){
-    co(function *(){
+  it('should noop with no args', function(){
+    return co(function *(){
       var res = yield [];
-      res.should.have.length(0);
-    })(done);
+      assert.equal(0, res.length);
+    });
+  })
+
+  it('should support an array of generators', function(){
+    return co(function*(){
+      var val = yield [function*(){ return 1 }()]
+      assert.deepEqual(val, [1])
+    })
   })
 })

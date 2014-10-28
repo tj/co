@@ -1,6 +1,6 @@
 
-var co = require('..');
 var assert = require('assert');
+var co = require('..');
 
 function sleep(ms) {
   return function(done){
@@ -13,10 +13,10 @@ function *work() {
   return 'yay';
 }
 
-describe('co(fn)', function(){
+describe('co(fn*)', function(){
   describe('with a generator function', function(){
-    it('should wrap with co()', function(done){
-      co(function *(){
+    it('should wrap with co()', function(){
+      return co(function *(){
         var a = yield work;
         var b = yield work;
         var c = yield work;
@@ -26,19 +26,20 @@ describe('co(fn)', function(){
         assert('yay' == c);
 
         var res = yield [work, work, work];
-        res.should.eql(['yay', 'yay', 'yay']);
-      })(done);
+        assert.deepEqual(['yay', 'yay', 'yay'], res);
+      });
     })
 
-    it('should catch errors', function(done){
-      co(function *(){
+    it('should catch errors', function(){
+      return co(function *(){
         yield function *(){
           throw new Error('boom');
         };
-      })(function(err){
+      }).then(function () {
+        throw new Error('wtf')
+      }, function (err) {
         assert(err);
         assert(err.message == 'boom');
-        done();
       });
     })
   })
