@@ -1,6 +1,9 @@
 # Co
 
-  [![Build Status](https://travis-ci.org/tj/co.svg?branch=master)](https://travis-ci.org/tj/co)
+[![NPM version][npm-image]][npm-url]
+[![Build status][travis-image]][travis-url]
+[![Test coverage][coveralls-image]][coveralls-url]
+[![Downloads][downloads-image]][downloads-url]
 
   Generator based control flow goodness for nodejs and the browser, using
   thunks _or_ promises, letting you write non-blocking code in a nice-ish
@@ -363,3 +366,12 @@ co(function *(){
 ## License
 
   MIT
+
+[npm-image]: https://img.shields.io/npm/v/co.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/co
+[travis-image]: https://img.shields.io/travis/tj/co.svg?style=flat-square
+[travis-url]: https://travis-ci.org/tj/co
+[coveralls-image]: https://img.shields.io/coveralls/tj/co.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/tj/co
+[downloads-image]: http://img.shields.io/npm/dm/co.svg?style=flat-square
+[downloads-url]: https://npmjs.org/package/co
