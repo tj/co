@@ -8,9 +8,4 @@ test:
 		--harmony-generators \
 		--bail
 
-bench:
-	@$(NODE) ./node_modules/.bin/matcha \
-	  --harmony-generators \
-	  benchmark
-
-.PHONY: test bench
+.PHONY: test
