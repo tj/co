@@ -1,32 +1,56 @@
-# Co
+# co
 
 [![NPM version][npm-image]][npm-url]
 [![Build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
 [![Downloads][downloads-image]][downloads-url]
 
-  Generator based control flow goodness for nodejs and the browser, using
-  thunks _or_ promises, letting you write non-blocking code in a nice-ish
-  way.
+  Generator based control flow goodness for nodejs and the browser,
+  using promises, letting you write non-blocking code in a nice-ish way.
 
-  Co is careful to relay any errors that occur back to the generator, including those
-  within the thunk, or from the thunk's callback. "Uncaught" exceptions in the generator
-  are passed to `co()`'s thunk.
+## Co v4
 
-  Make sure to view the [examples](https://github.com/visionmedia/co/tree/master/examples).
+  `co@4.0.0` has been released, which relies promises.
+  It is now a stepping stone towards [ES7 async/await](https://github.com/lukehoban/ecmascript-asyncawait).
+  The primary API change is how `co()` is invoked.
+  Before, `co` returned a "thunk", which you then call with a callback with optional arguments.
+  Now, `co()` returns a promise.
+
+```js
+co(function* () {
+  var result = yield Promise.resolve(true);
+  return result;
+}).then(function (value) {
+  console.log(value);
+}, function (err) {
+  console.error(err.stack);
+});
+```
+
+  If you want to convert a `co`-generator-function into a regular function that returns a promise,
+  you now use `co.wrap(fn*)`.
+
+```js
+var fn = co.wrap(function* (val) {
+  return yield Promise.resolve(val);
+});
+
+fn(true).then(function (val) {
+
+});
+```
 
 ## Platform Compatibility
+
+  `co@4+` requires a `Promise` implementation.
+  For versions of node `< 0.11` and for many older browsers,
+  you should/must include your own `Promise` polyfill.
 
   When using node 0.11.x or greater, you must use the `--harmony-generators`
   flag or just `--harmony` to get access to generators.
 
   When using node 0.10.x and lower or browsers without generator support,
   you must use [gnode](https://github.com/TooTallNate/gnode) and/or [regenerator](http://facebook.github.io/regenerator/).
-
-  When using node 0.8.x and lower or browsers without `setImmediate`,
-  you must include a `setImmediate` polyfill.
-  For a really simple polyfill, you may use [component/setimmediate.js](https://github.com/component/setimmediate.js).
-  For a more robust polyfill, you may use [YuzuJS/setImmediate](https://github.com/YuzuJS/setImmediate).
 
 ## Installation
 
@@ -36,49 +60,52 @@ $ npm install co
 
 ## Associated libraries
 
-  View the [wiki](https://github.com/visionmedia/co/wiki) for libraries that
-  work well with Co.
+Any library that returns promises work well with `co`.
 
-## Example
+- [mz](https://github.com/normalize/mz) - wrap all of node's code libraries as promises.
+
+View the [wiki](https://github.com/visionmedia/co/wiki) for more libraries.
+
+## Examples
 
 ```js
 var co = require('co');
-var thunkify = require('thunkify');
-var request = require('request');
-var get = thunkify(request.get);
 
 co(function *(){
-  var a = yield get('http://google.com');
-  var b = yield get('http://yahoo.com');
-  var c = yield get('http://cloudup.com');
-  console.log(a[0].statusCode);
-  console.log(b[0].statusCode);
-  console.log(c[0].statusCode);
-})()
+  // yield any promise
+  var result = yield Promise.resolve(true);
+}).catch(onerror);
 
 co(function *(){
-  var a = get('http://google.com');
-  var b = get('http://yahoo.com');
-  var c = get('http://cloudup.com');
+  // resolve multiple promises in parallel
+  var a = Promise.resolve(1);
+  var b = Promise.resolve(2);
+  var c = Promise.resolve(3);
   var res = yield [a, b, c];
   console.log(res);
-})()
+  // => [1, 2, 3]
+}).catch(onerror);
 
-// Error handling
-
+// errors can be try/catched
 co(function *(){
   try {
-    var res = yield get('http://badhost.invalid');
-    console.log(res);
-  } catch(e) {
-    console.log(e.code) // ENOTFOUND
+    yield Promise.reject(new Error('boom'));
+  } catch (err) {
+    console.error(err.message); // "boom"
  }
-})()
+}).catch(onerror);
+
+function onerror(err) {
+  // log any uncaught errors
+  // co will not throw any errors you do not handle!!!
+  // HANDLE ALL YOUR ERRORS!!!
+  console.error(err.stack);
+}
 ```
 
 ## Yieldables
 
-  The "yieldable" objects currently supported are:
+  The `yieldable` objects currently supported are:
 
   - promises
   - thunks (functions)
@@ -87,280 +114,83 @@ co(function *(){
   - generators (delegation)
   - generator functions (delegation)
 
-To convert a regular node function that accepts a callback into one which returns a thunk you may want to use [thunkify](https://github.com/visionmedia/node-thunkify) or similar.
+Nested `yieldable`s are supported, meaning you can nest
+promises within objects within arrays, and so on!
 
-## Thunks vs promises
+### Promises
 
-  While co supports promises, you may return "thunks" from your functions,
-  which otherwise behaves just like the traditional node-style callback
-  with a signature of: `(err, result)`.
+[Read more on promises!](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 
+### Thunks
 
-  For example take `fs.readFile`, we all know the signature is:
+Thunks are functions that only have a single argument, a callback.
+Thunk support only remains for backwards compatibility and may
+be removed in future versions of `co`.
 
-```js
-fs.readFile(path, encoding, function(err, result){
+### Arrays
 
-});
-```
-
-  To work with Co we need a function to return another function of
-  the same signature:
+`yield`ing an array will resolve all the `yieldables` in parallel.
 
 ```js
-fs.readFile(path, encoding)(function(err, result){
-
-});
+co(function* () {
+  var res = yield [
+    Promise.resolve(1),
+    Promise.resolve(2),
+    Promise.resolve(3),
+  ];
+  console.log(res); // => [1, 2, 3]
+}).catch(onerror);
 ```
 
-  Which basically looks like this:
+### Objects
+
+Just like arrays, objects resolve all `yieldable`s in parallel.
 
 ```js
-function read(path, encoding) {
-  return function(cb){
-    fs.readFile(path, encoding, cb);
-  }
-}
+co(function* () {
+  var res = yield {
+    1: Promise.resolve(1),
+    2: Promise.resolve(2),
+  };
+  console.log(res); // => { 1: 1, 2: 2 }
+}).catch(onerror);
 ```
 
-  or to execute immediately like this (see [`thunkify`](https://github.com/visionmedia/node-thunkify)):
+### Generators and Generator Functions
 
-```js
-function read(path, encoding) {
-  // call fs.readFile immediately, store result later
-  return function(cb){
-    // cb(err, result) or when result ready
-  }
-}
-```
-
-## Receiver propagation
-
-  When `co` is invoked with a receiver it will propagate to most yieldables,
-  allowing you to alter `this`.
-
-```js
-var ctx = {};
-
-function foo() {
-  assert(this == ctx);
-}
-
-co(function *(){
-  assert(this == ctx);
-  yield foo;
-}).call(ctx)
-```
-
-  You also pass arguments through the generator:
-
-```js
-co(function *(a){
-  assert(this == ctx);
-  assert('yay' == a);
-  yield foo;
-}).call(ctx, 'yay');
-```
+Any generator or generator function you can pass into `co`
+can be yielded as well. This should generally be avoided
+as we should be moving towards spec-compliant `Promise`s instead.
 
 ## API
 
-### co(fn)
+### co(fn*).then( val => )
 
-  Pass a generator `fn` and return a thunk. The thunk's signature is
-  `(err, result)`, where `result` is the value passed to the `return`
-  statement.
+Returns a promise that resolves a generator, generator function,
+or any function that returns a generator.
 
 ```js
-var co = require('co');
-var fs = require('fs');
-
-function read(file) {
-  return function(fn){
-    fs.readFile(file, 'utf8', fn);
-  }
-}
-
-co(function *(){
-  var a = yield read('.gitignore');
-  var b = yield read('Makefile');
-  var c = yield read('package.json');
-  return [a, b, c];
-})()
+co(function* () {
+  return yield Promise.resolve(true);
+}).then(function (val) {
+  console.log(val);
+}, function (err) {
+  console.error(err.stack);
+});
 ```
 
-  You may also yield `Generator` objects to support nesting:
+### var fn = co.wrap(fn*)
 
-
-```js
-var co = require('co');
-var fs = require('fs');
-
-function size(file) {
-  return function(fn){
-    fs.stat(file, function(err, stat){
-      if (err) return fn(err);
-      fn(null, stat.size);
-    });
-  }
-}
-
-function *foo(){
-  var a = yield size('.gitignore');
-  var b = yield size('Makefile');
-  var c = yield size('package.json');
-  return [a, b, c];
-}
-
-function *bar(){
-  var a = yield size('examples/parallel.js');
-  var b = yield size('examples/nested.js');
-  var c = yield size('examples/simple.js');
-  return [a, b, c];
-}
-
-co(function *(){
-  var results = yield [foo(), bar()];
-  console.log(results);
-})()
-```
-
-  Or if the generator functions do not require arguments, simply `yield` the function:
+Convert a generator into a regular function that returns a `Promise`.
 
 ```js
-var co = require('co');
-var thunkify = require('thunkify');
-var request = require('request');
+var fn = co.wrap(function* (val) {
+  return yield Promise.resolve(val);
+});
 
-var get = thunkify(request.get);
+fn(true).then(function (val) {
 
-function *results() {
-  var a = get('http://google.com')
-  var b = get('http://yahoo.com')
-  var c = get('http://ign.com')
-  return yield [a, b, c]
-}
-
-co(function *(){
-  // 3 concurrent requests at a time
-  var a = yield results;
-  var b = yield results;
-  console.log(a, b);
-
-  // 6 concurrent requests
-  console.log(yield [results, results]);
-})()
-```
-
-  If a thunk is written to execute immediately you may achieve parallelism
-  by simply `yield`-ing _after_ the call. The following are equivalent if
-  each call kicks off execution immediately:
-
-```js
-co(function *(){
-  var a = size('package.json');
-  var b = size('Readme.md');
-  var c = size('Makefile');
-
-  return [yield a, yield b, yield c];
-})()
-```
-
-  Or:
-
-```js
-co(function *(){
-  var a = size('package.json');
-  var b = size('Readme.md');
-  var c = size('Makefile');
-
-  return yield [a, b, c];
-})()
-```
-
-  You can also pass arguments into the generator. The last argument, `done`, is
-  the callback function. Here's an example:
-
-```js
-var exec = require('co-exec');
-co(function *(cmd) {
-  var res = yield exec(cmd);
-  return res;
-})('pwd', done);
-```
-
-### yield array
-
-  By yielding an array of thunks you may "join" them all into a single thunk which executes them all concurrently,
-  instead of in sequence. Note that the resulting array ordering _is_ retained.
-
-```js
-
-var co = require('co');
-var fs = require('fs');
-
-function size(file) {
-  return function(fn){
-    fs.stat(file, function(err, stat){
-      if (err) return fn(err);
-      fn(null, stat.size);
-    });
-  }
-}
-
-co(function *(){
-  var a = size('.gitignore');
-  var b = size('index.js');
-  var c = size('Makefile');
-  var res = yield [a, b, c];
-  console.log(res);
-  // => [ 13, 1687, 129 ]
-})()
-```
-
-Nested arrays may also be expressed as simple nested arrays:
-
-```js
-var a = [
-  get('http://google.com'),
-  get('http://yahoo.com'),
-  get('http://ign.com')
-];
-
-var b = [
-  get('http://google.com'),
-  get('http://yahoo.com'),
-  get('http://ign.com')
-];
-
-console.log(yield [a, b]);
-```
-
-### yield object
-
-  Yielding an object behaves much like yielding an array, however recursion is supported:
-
-```js
-co(function *(){
-  var user = yield {
-    name: {
-      first: get('name.first'),
-      last: get('name.last')
-    }
-  };
-})()
-```
-
-  Here is the sequential equivalent without yielding an object:
-
-```js
-co(function *(){
-  var user = {
-    name: {
-      first: yield get('name.first'),
-      last: yield get('name.last')
-    }
-  };
-})()
+});
 ```
 
 ## License
