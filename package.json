@@ -25,5 +25,8 @@
     "index.js"
   ],
   "license": "MIT",
-  "repository": "tj/co"
+  "repository": "tj/co",
+  "engines": {
+    "node": ">= 0.11.13"
+  }
 }
