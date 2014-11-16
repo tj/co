@@ -1,4 +1,10 @@
 
+4.0.0 / 2014-11-15
+==================
+
+ * co now returns a promise and uses promises underneath
+ * `co.wrap()` for wrapping generator functions
+
 3.1.0 / 2014-06-30
 ==================
 
@@ -6,7 +12,7 @@
    Users are expected to shim themselves. Also returns CommonJS browser support.
  * added key order preservation for objects. thanks @greim
  * replace `q` with `bluebird` in benchmarks and tests
-  
+
 3.0.6 / 2014-05-03
 ==================
 
