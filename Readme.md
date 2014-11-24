@@ -1,6 +1,6 @@
 # co
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/tj/co?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/tj/co?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![NPM version][npm-image]][npm-url]
 [![Build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
