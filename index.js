@@ -9,7 +9,7 @@ var slice = Array.prototype.slice;
  * Expose `co`.
  */
 
-module.exports = co;
+module.exports = co['default'] = co.co = co;
 
 /**
  * Wrap the given generator `fn` into a
