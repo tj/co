@@ -1,4 +1,14 @@
 
+4.0.2 / 2014-12-18
+==================
+
+ * always return a global promise implementation
+
+4.0.1 / 2014-11-30
+==================
+
+ * friendlier ES6 module exports
+
 4.0.0 / 2014-11-15
 ==================
 
