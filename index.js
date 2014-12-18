@@ -41,7 +41,7 @@ co.wrap = function (fn) {
 function co(gen) {
   var ctx = this;
   if (typeof gen === 'function') gen = gen.call(this);
-  return onFulfilled();
+  return Promise.resolve(onFulfilled());
 
   /**
    * @param {Mixed} res
