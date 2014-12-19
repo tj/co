@@ -49,4 +49,12 @@ describe('co(* -> yield <promise>', function(){
       });
     })
   })
+
+  describe('when yielding a non-standard promise-like', function(){
+    it('should return a real Promise', function() {
+      assert(co(function *(){
+        yield { then: function(){} };
+      }) instanceof Promise);
+    });
+  })
 })
