@@ -41,56 +41,58 @@ co.wrap = function (fn) {
 function co(gen) {
   var ctx = this;
   if (typeof gen === 'function') gen = gen.call(this);
-  return Promise.resolve(onFulfilled());
+  return new Promise(function(resolve, reject) {
+    onFulfilled();
 
-  /**
-   * @param {Mixed} res
-   * @return {Promise}
-   * @api private
-   */
+    /**
+     * @param {Mixed} res
+     * @return {Promise}
+     * @api private
+     */
 
-  function onFulfilled(res) {
-    var ret;
-    try {
-      ret = gen.next(res);
-    } catch (e) {
-      return Promise.reject(e);
+    function onFulfilled(res) {
+      var ret;
+      try {
+        ret = gen.next(res);
+      } catch (e) {
+        return reject(e);
+      }
+      next(ret);
     }
-    return next(ret);
-  }
 
-  /**
-   * @param {Error} err
-   * @return {Promise}
-   * @api private
-   */
+    /**
+     * @param {Error} err
+     * @return {Promise}
+     * @api private
+     */
 
-  function onRejected(err) {
-    var ret;
-    try {
-      ret = gen.throw(err);
-    } catch (e) {
-      return Promise.reject(e);
+    function onRejected(err) {
+      var ret;
+      try {
+        ret = gen.throw(err);
+      } catch (e) {
+        return reject(e);
+      }
+      next(ret);
     }
-    return next(ret);
-  }
 
-  /**
-   * Get the next value in the generator,
-   * return a promise.
-   *
-   * @param {Object} ret
-   * @return {Promise}
-   * @api private
-   */
+    /**
+     * Get the next value in the generator,
+     * return a promise.
+     *
+     * @param {Object} ret
+     * @return {Promise}
+     * @api private
+     */
 
-  function next(ret) {
-    if (ret.done) return Promise.resolve(ret.value);
-    var value = toPromise.call(ctx, ret.value);
-    if (value && isPromise(value)) return value.then(onFulfilled, onRejected);
-    return onRejected(new TypeError('You may only yield a function, promise, generator, array, or object, '
-      + 'but the following object was passed: "' + String(ret.value) + '"'));
-  }
+    function next(ret) {
+      if (ret.done) return resolve(ret.value);
+      var value = toPromise.call(ctx, ret.value);
+      if (value && isPromise(value)) return value.then(onFulfilled, onRejected);
+      return onRejected(new TypeError('You may only yield a function, promise, generator, array, or object, '
+        + 'but the following object was passed: "' + String(ret.value) + '"'));
+    }
+  });
 }
 
 /**
