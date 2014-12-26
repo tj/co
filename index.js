@@ -41,6 +41,9 @@ co.wrap = function (fn) {
 function co(gen) {
   var ctx = this;
   if (typeof gen === 'function') gen = gen.call(this);
+  // we wrap everything in a promise to avoid promise chaining,
+  // which leads to memory leak errors.
+  // see https://github.com/tj/co/issues/180
   return new Promise(function(resolve, reject) {
     onFulfilled();
 
