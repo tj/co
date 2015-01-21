@@ -1,9 +1,14 @@
 
+4.2.0 / 2015-01-20
+==================
+
+ * support comparing generator functions with ES6 transpilers
+
 4.1.0 / 2014-12-26
 ==================
 
  * fix memory leak #180
- 
+
 4.0.2 / 2014-12-18
 ==================
 
