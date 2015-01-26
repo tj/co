@@ -53,6 +53,8 @@ fn(true).then(function (val) {
   When using node 0.10.x and lower or browsers without generator support,
   you must use [gnode](https://github.com/TooTallNate/gnode) and/or [regenerator](http://facebook.github.io/regenerator/).
 
+  io.js is supported out of the box, you can use `co` without flags or polyfills.
+
 ## Installation
 
 ```
