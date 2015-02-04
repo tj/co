@@ -24,9 +24,11 @@ module.exports = co['default'] = co.co = co;
  */
 
 co.wrap = function (fn) {
-  return function () {
+  createPromise.__generatorFunction__ = fn;
+  return createPromise;
+  function createPromise() {
     return co.call(this, fn.apply(this, arguments));
-  };
+  }
 };
 
 /**
