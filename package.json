@@ -16,9 +16,9 @@
     "mz": "^1.0.2"
   },
   "scripts": {
-    "test": "mocha --harmony-generators --reporter spec",
-    "test-cov": "node --harmony-generators node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter dot",
-    "test-travis": "node --harmony-generators node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --reporter dot"
+    "test": "mocha --harmony --reporter spec",
+    "test-cov": "node --harmony node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter dot",
+    "test-travis": "node --harmony node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --reporter dot"
   },
   "files": [
     "index.js"
@@ -26,6 +26,7 @@
   "license": "MIT",
   "repository": "tj/co",
   "engines": {
-    "node": ">= 0.11.13"
+    "iojs": ">= 1.0.0",
+    "node": ">= 0.11.16"
   }
 }
