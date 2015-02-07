@@ -1,4 +1,9 @@
 
+4.3.0 / 2014-02-05
+==================
+
+ * check for generator functions in a ES5-transpiler-friendly way
+
 4.2.0 / 2015-01-20
 ==================
 
