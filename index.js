@@ -34,7 +34,7 @@ co.wrap = function (fn) {
  * and return a promise.
  *
  * @param {Function} fn
- * @return {Function}
+ * @return {Promise}
  * @api public
  */
 
