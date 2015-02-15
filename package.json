@@ -1,6 +1,6 @@
 {
   "name": "co",
-  "version": "4.3.1",
+  "version": "4.4.0",
   "description": "generator async control flow goodness",
   "keywords": [
     "async",
@@ -10,13 +10,12 @@
     "coroutine"
   ],
   "devDependencies": {
-    "bluebird": "^2.0.0",
     "istanbul-harmony": "0",
     "mocha": "^2.0.0",
     "mz": "^1.0.2"
   },
   "scripts": {
-    "test": "mocha --harmony --reporter spec",
+    "test": "mocha --harmony",
     "test-cov": "node --harmony node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter dot",
     "test-travis": "node --harmony node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --reporter dot"
   },
@@ -27,6 +26,6 @@
   "repository": "tj/co",
   "engines": {
     "iojs": ">= 1.0.0",
-    "node": ">= 0.11.16"
+    "node": ">= 0.12.0"
   }
 }

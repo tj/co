@@ -1,4 +1,11 @@
 
+4.4.0 / 2014-02-14
+==================
+
+ * refactor `isGeneratorFunction`
+ * expose generator function from `co.wrap()`
+ * drop support for node < 0.12
+
 4.3.0 / 2014-02-05
 ==================
 
