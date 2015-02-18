@@ -117,7 +117,7 @@ function onerror(err) {
   - generators (delegation)
   - generator functions (delegation)
 
-Nested `yieldable`s are supported, meaning you can nest
+Nested `yieldable` objects are supported, meaning you can nest
 promises within objects within arrays, and so on!
 
 ### Promises
