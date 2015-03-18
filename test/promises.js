@@ -69,21 +69,29 @@ describe('co(function) -> promise', function(){
     })
   })
 
-  it('return resolve promise', function(done){
-    co(function(){
+  it('return resolve promise', function(){
+    return co(function(){
       return Promise.resolve(1);
     }).then(function(data){
       assert.equal(data, 1);
-      done();
     })
   })
 
-  it('return reject promise', function(done){
-    co(function(){
+  it('return reject promise', function(){
+    return co(function(){
       return Promise.reject(1);
     }).catch(function(data){
       assert.equal(data, 1);
-      done();
     })
+  })
+
+  it('should catch errors', function(){
+    return co(function(){
+      throw new Error('boom');
+    }).then(function () {
+      throw new Error('nope');
+    }).catch(function (err) {
+      assert.equal(err.message, 'boom');
+    });
   })
 })
