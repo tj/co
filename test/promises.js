@@ -58,3 +58,32 @@ describe('co(* -> yield <promise>', function(){
     });
   })
 })
+
+describe('co(function) -> promise', function(){
+  it('return value', function(done){
+    co(function(){
+      return 1;
+    }).then(function(data){
+      assert.equal(data, 1);
+      done();
+    })
+  })
+
+  it('return resolve promise', function(done){
+    co(function(){
+      return Promise.resolve(1);
+    }).then(function(data){
+      assert.equal(data, 1);
+      done();
+    })
+  })
+
+  it('return reject promise', function(done){
+    co(function(){
+      return Promise.reject(1);
+    }).catch(function(data){
+      assert.equal(data, 1);
+      done();
+    })
+  })
+})
