@@ -1,4 +1,9 @@
 
+4.5.0 / 2015-03-17
+==================
+
+ * support regular functions (that return promises)
+
 4.4.0 / 2015-02-14
 ==================
 
