@@ -1,6 +1,6 @@
 # co
 
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/tj/co?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter][gitter-image]][gitter-url]
 [![NPM version][npm-image]][npm-url]
 [![Build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
@@ -208,3 +208,5 @@ fn(true).then(function (val) {
 [coveralls-url]: https://coveralls.io/r/tj/co
 [downloads-image]: http://img.shields.io/npm/dm/co.svg?style=flat-square
 [downloads-url]: https://npmjs.org/package/co
+[gitter-image]: https://badges.gitter.im/Join%20Chat.svg
+[gitter-url]: https://gitter.im/tj/co?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
