@@ -42,12 +42,13 @@ co.wrap = function (fn) {
 
 function co(gen) {
   var ctx = this;
+  var args = slice.call(arguments, 1)
 
   // we wrap everything in a promise to avoid promise chaining,
   // which leads to memory leak errors.
   // see https://github.com/tj/co/issues/180
   return new Promise(function(resolve, reject) {
-    if (typeof gen === 'function') gen = gen.call(ctx);
+    if (typeof gen === 'function') gen = gen.apply(ctx, args);
     if (!gen || typeof gen.next !== 'function') return resolve(gen);
 
     onFulfilled();
