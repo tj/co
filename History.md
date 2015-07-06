@@ -1,3 +1,12 @@
+4.5.5 / 2015-07-06
+==================
+
+ * support passing the rest of the arguments to co into the generator
+
+ ```js
+ function *gen(...args) { }
+ co(gen, ...args);
+ ```
 
 4.5.0 / 2015-03-17
 ==================
