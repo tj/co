@@ -1,4 +1,4 @@
-4.5.5 / 2015-07-06
+4.6.0 / 2015-07-09
 ==================
 
  * support passing the rest of the arguments to co into the generator
