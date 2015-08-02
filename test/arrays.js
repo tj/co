@@ -5,7 +5,7 @@ var assert = require('assert');
 var co = require('..');
 
 describe('co(* -> yield [])', function(){
-  it('should aggregate several thunks', function(){
+  it('should aggregate several promises', function(){
     return co(function *(){
       var a = read('index.js', 'utf8');
       var b = read('LICENSE', 'utf8');
