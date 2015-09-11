@@ -23,6 +23,7 @@
     "browserify": "browserify index.js -o ./co-browser.js -s co"
   },
   "files": [
+    "co-browser.js",
     "index.js"
   ],
   "license": "MIT",
