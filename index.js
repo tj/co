@@ -42,7 +42,7 @@ co.wrap = function (fn) {
 
 function co(gen) {
   var ctx = this;
-  var args = slice.call(arguments, 1)
+  var args = slice.call(arguments, 1);
 
   // we wrap everything in a promise to avoid promise chaining,
   // which leads to memory leak errors.
