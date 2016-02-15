@@ -67,6 +67,7 @@ function co(gen) {
         return reject(e);
       }
       next(ret);
+      return null;
     }
 
     /**
