@@ -47,13 +47,13 @@ fn(true).then(function (val) {
   For versions of node `< 0.11` and for many older browsers,
   you should/must include your own `Promise` polyfill.
 
-  When using node 0.11.x or greater, you must use the `--harmony-generators`
-  flag or just `--harmony` to get access to generators.
-
   When using node 0.10.x and lower or browsers without generator support,
   you must use [gnode](https://github.com/TooTallNate/gnode) and/or [regenerator](http://facebook.github.io/regenerator/).
 
-  io.js is supported out of the box, you can use `co` without flags or polyfills.
+  When using node 0.11.x, you must use the `--harmony-generators`
+  flag or just `--harmony` to get access to generators.
+
+  Node v4+ is supported out of the box, you can use `co` without flags or polyfills.
 
 ## Installation
 
