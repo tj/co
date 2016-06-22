@@ -12,7 +12,7 @@
 ## Co v4
 
   `co@4.0.0` has been released, which now relies on promises.
-  It is a stepping stone towards [ES7 async/await](https://github.com/lukehoban/ecmascript-asyncawait).
+  It is a stepping stone towards the [async/await proposal](https://github.com/lukehoban/ecmascript-asyncawait).
   The primary API change is how `co()` is invoked.
   Before, `co` returned a "thunk", which you then called with a callback and optional arguments.
   Now, `co()` returns a promise.
