@@ -218,6 +218,7 @@ function isGenerator(obj) {
  * @return {Boolean}
  * @api private
  */
+ 
 function isGeneratorFunction(obj) {
   var constructor = obj.constructor;
   if (!constructor) return false;
