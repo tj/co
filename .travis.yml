@@ -1,6 +1,8 @@
 node_js:
-- "0.12"
+- "stable"
+- "4"
 - "iojs"
+- "0.12"
 language: node_js
 script: "npm run-script test-travis"
 after_script: "npm install coveralls@2 && cat ./coverage/lcov.info | coveralls"
